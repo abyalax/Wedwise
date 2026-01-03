@@ -1,7 +1,7 @@
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
 
 import { QUERY_KEY } from '~/common/const/querykey';
-import { getCustomer } from '~/modules/customers/customer.api';
+import { getCustomer } from '~/data/customers/customer.api';
 
 export const queryGetCustomer = (customerId: string) =>
   queryOptions({

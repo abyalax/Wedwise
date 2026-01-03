@@ -50,7 +50,7 @@ export interface GuestWithConversations extends Guest {
 
 import type { Conversation } from './conversation.types';
 
-export interface GuestWithConversationsAndInvitation extends Guest {
+export interface GuestWithConversationsAndInvitationRaw extends Guest {
   conversations: Conversation[];
   invitation: {
     id: number;
@@ -61,3 +61,5 @@ export interface GuestWithConversationsAndInvitation extends Guest {
     aiContext?: string | null;
   };
 }
+
+export type GuestWithConversationsAndInvitation = Omit<GuestWithConversationsAndInvitationRaw, 'invitationId'>;

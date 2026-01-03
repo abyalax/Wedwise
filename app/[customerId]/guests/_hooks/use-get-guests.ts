@@ -2,8 +2,8 @@ import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
 
 import { QUERY_KEY } from '~/common/const/querykey';
 import { MetaRequest } from '~/common/types/meta';
+import { getGuests } from '~/data/guests/guest.api';
 import type { Guest } from '~/db/schema.d';
-import { getGuests } from '~/modules/guests/guest.api';
 
 export const queryGetGuests = (customerId: string, params: MetaRequest<Guest>) =>
   queryOptions({

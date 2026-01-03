@@ -3,7 +3,7 @@ export type CustomerStatus = 'Active' | 'In Active';
 
 export interface Customer {
   id: number;
-  userId: number;
+  user_id: number;
   theme: string;
   status: CustomerStatus;
   note?: string | null;
@@ -28,4 +28,3 @@ export interface UpdateCustomer {
   status?: CustomerStatus;
   note?: string;
 }
-

@@ -3,33 +3,8 @@
 import { z } from 'zod';
 import { CustomerStatus, GuestStatus } from '~/generated/prisma/enums';
 
-// Re-export types from frontend entities for backward compatibility
-export type {
-  User,
-  CreateUser,
-  UpdateUser,
-  UserWithPassword,
-  UserRoles,
-  BaseUser,
-} from '~/types/entities/user.types';
-export type {
-  Customer,
-  CreateCustomer,
-  UpdateCustomer,
-} from '~/types/entities/customer.types';
-export type {
-  Guest,
-  CreateGuest,
-  UpdateGuest,
-  GuestWithInvitation,
-  GuestWithConversations,
-  GuestWithConversationsAndInvitation,
-} from '~/types/entities/guest.types';
-export type {
-  Invitation,
-  CreateInvitation,
-  UpdateInvitation,
-} from '~/types/entities/invitation.types';
+// Export enums
+export { CustomerStatus, GuestStatus } from '~/generated/prisma/enums';
 export type {
   Conversation,
   ConversationMessage,
@@ -37,16 +12,40 @@ export type {
   CreateConversation,
   UpdateConversation,
 } from '~/types/entities/conversation.types';
-export type { Permission } from '~/types/entities/permission.types';
-export type { Role, UserRole } from '~/types/entities/role.types';
 export type {
-  Feature,
+  CreateCustomer,
+  Customer,
+  UpdateCustomer,
+} from '~/types/entities/customer.types';
+export type {
   CreateFeature,
+  Feature,
   UpdateFeature,
 } from '~/types/entities/feature.types';
-
-// Export enums
-export { CustomerStatus, GuestStatus } from '~/generated/prisma/enums';
+export type {
+  CreateGuest,
+  Guest,
+  GuestWithConversations,
+  GuestWithConversationsAndInvitation,
+  GuestWithInvitation,
+  UpdateGuest,
+} from '~/types/entities/guest.types';
+export type {
+  CreateInvitation,
+  Invitation,
+  UpdateInvitation,
+} from '~/types/entities/invitation.types';
+export type { Permission } from '~/types/entities/permission.types';
+export type { Role, UserRole } from '~/types/entities/role.types';
+// Re-export types from frontend entities for backward compatibility
+export type {
+  BaseUser,
+  CreateUser,
+  UpdateUser,
+  User,
+  UserRoles,
+  UserWithPassword,
+} from '~/types/entities/user.types';
 
 // Validation Schemas
 export const customerInsertSchema = z.object({
@@ -82,4 +81,3 @@ export const guestUpdateSchema = z.object({
   note: z.string().max(255).nullable().optional(),
   rsvpAt: z.string().datetime().nullable().optional(),
 });
-

@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 import { QUERY_KEY } from '~/common/const/querykey';
 import { TAxiosResponse, TResponse } from '~/common/types/response';
-import { forgotPassword } from '~/modules/auth/auth.api';
+import { forgotPassword } from '~/data/auth/auth.api';
 
 export const useForgotPassword = (): UseMutationResult<TAxiosResponse<unknown>, TResponse, { email: string }, unknown> => {
   return useMutation({

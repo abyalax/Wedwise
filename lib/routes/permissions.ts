@@ -1,55 +1,40 @@
+
 // Auto-generated file - do not edit manually
-// Generated at: 2025-09-29T12:58:04.790Z
+// Generated at: 2026-01-03T11:53:11.344Z
 
 // Hierarchical permissions (includes parent route permissions)
 export const routePermissions: Record<string, string[]> = {
-  '/pricing': [],
-  '/order': [],
-  '/invitation': [],
-  '/backoffice': ['customer:*'],
-  '/[customerId]': ['customer:read_invitation', 'customer:create_invitation'],
-  '/backoffice/customers': ['customer:*'],
-  '/auth/reset-password': [],
-  '/auth/register': [],
-  '/auth/login': [],
-  '/auth/forgot-password': [],
-  '/[customerId]/invitations': ['customer:read_invitation', 'customer:create_invitation', 'customer:delete_invitation'],
-  '/[customerId]/guests': ['customer:read_invitation', 'customer:create_invitation', 'customer:delete_invitation'],
-  '/backoffice/customers/create': ['customer:*'],
-  '/backoffice/customers/[customerId]': ['customer:*'],
-  '/[customerId]/guests/create': ['customer:read_invitation', 'customer:create_invitation', 'customer:delete_invitation'],
-  '/[customerId]/guests/[guestId]': ['customer:read_invitation', 'customer:create_invitation', 'customer:delete_invitation'],
-  '/backoffice/customers/[customerId]/update': ['customer:*', 'customer:update_invitation'],
-  '/[customerId]/guests/[guestId]/update': [
-    'customer:read_invitation',
-    'customer:create_invitation',
-    'customer:delete_invitation',
-    'customer:update_invitation',
+  "/[customerId]": [
+    "customer:read_invitation",
+    "customer:create_invitation"
   ],
-  '/api/backoffice/customers': ['customer:*'],
-  '/api/auth/reset-password': [],
-  '/api/auth/forgot-password': [],
-  '/api/auth/[...nextauth]': [],
-  '/api/[customerId]/guests': ['customer:read_invitation', 'customer:create_invitation'],
-  '/api/[customerId]/chatbot': [],
-  '/api/backoffice/customers/[customerId]': ['customer:*'],
-  '/api/[customerId]/guests/[guestId]': ['customer:read_invitation', 'customer:create_invitation', 'customer:update_invitation', 'customer:delete_invitation'],
-  '/:customerId': ['customer:read_invitation', 'customer:create_invitation'],
-  '/auth': [],
-  '/:customerId/invitations': ['customer:read_invitation', 'customer:create_invitation', 'customer:delete_invitation'],
-  '/:customerId/guests': ['customer:read_invitation', 'customer:create_invitation', 'customer:delete_invitation'],
-  '/backoffice/customers/:customerId': ['customer:*'],
-  '/:customerId/guests/create': ['customer:read_invitation', 'customer:create_invitation', 'customer:delete_invitation'],
-  '/:customerId/guests/:guestId': ['customer:read_invitation', 'customer:create_invitation', 'customer:delete_invitation'],
-  '/backoffice/customers/:customerId/update': ['customer:*', 'customer:update_invitation'],
-  '/:customerId/guests/:guestId/update': ['customer:read_invitation', 'customer:create_invitation', 'customer:delete_invitation', 'customer:update_invitation'],
-  '/api': [],
-  '/api/backoffice': [],
-  '/api/auth': [],
-  '/api/auth/*': [],
-  '/api/[customerId]': [],
-  '/api/:customerId/guests': ['customer:read_invitation', 'customer:create_invitation'],
-  '/api/:customerId/chatbot': [],
-  '/api/backoffice/customers/:customerId': ['customer:*'],
-  '/api/:customerId/guests/:guestId': ['customer:read_invitation', 'customer:create_invitation', 'customer:update_invitation', 'customer:delete_invitation'],
+  "/backoffice": [
+    "customers:*",
+    "invitations:*",
+    "payments:*"
+  ],
+  "/[customerId]/guests": [
+    "customer:read_invitation",
+    "customer:create_invitation",
+    "customer:delete_invitation"
+  ],
+  "/[customerId]/invitations": [
+    "customer:read_invitation",
+    "customer:create_invitation",
+    "customer:delete_invitation"
+  ],
+  "/:customerId": [
+    "customer:read_invitation",
+    "customer:create_invitation"
+  ],
+  "/:customerId/guests": [
+    "customer:read_invitation",
+    "customer:create_invitation",
+    "customer:delete_invitation"
+  ],
+  "/:customerId/invitations": [
+    "customer:read_invitation",
+    "customer:create_invitation",
+    "customer:delete_invitation"
+  ]
 } as const;

@@ -16,7 +16,7 @@ export const CustomersTable = () => {
   });
 
   const { columns, columnIds, initialColumnVisibility } = useColumns({
-    defaultVisible: ['select', 'userId', 'theme', 'note', 'action'],
+    defaultVisible: ['select', 'theme', 'note', 'action'],
   });
   return (
     <Table

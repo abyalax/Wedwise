@@ -43,10 +43,6 @@ export const useColumns = ({ defaultVisible }: Params) => {
         id: 'note',
         header: 'Note',
       }),
-      columnHelper.accessor('userId', {
-        id: 'userId',
-        header: 'User ID',
-      }),
       columnHelper.accessor('theme', {
         id: 'theme',
         header: 'Theme',

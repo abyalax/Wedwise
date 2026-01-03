@@ -5,7 +5,7 @@
   "scripts": {
     "permissions:generate": "env-cmd -f .env tsx scripts/generate-route-permissions.ts",
     "permissions:watch": "env-cmd -f .env tsx scripts/generate-route-permissions.ts --watch",
-    "dev": "next dev --turbopack & pnpm permissions:watch",
+    "dev": "concurrently \"pnpm run permissions:watch\" \"next dev --turbopack\"",
     "build": "pnpm permissions:generate && next build --turbopack",
     "test": "env-cmd -f .env vitest run --config ./vitest.config.ts",
     "start": "next start",

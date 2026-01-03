@@ -2,7 +2,6 @@
 
 import { FC } from 'react';
 
-import { ROLEIDS } from '~/common/const/permission';
 import { Flex } from '~/components/layouts/flex';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card';
 
@@ -16,7 +15,6 @@ export const Component: FC = () => {
   const handleSubmit = (data: FormDataCustomer) => {
     mutate({
       ...data,
-      roleId: ROLEIDS.Customer,
     });
   };
 

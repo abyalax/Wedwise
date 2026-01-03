@@ -1,14 +1,14 @@
 import { NextResponse } from 'next/server';
 
 import { TResponse } from '~/common/types/response';
-import { db } from '~/db';
+import { prisma } from '~/db/prisma/client';
 import { Customer, customerUpdateSchema } from '~/db/schema';
 import { NotFoundException } from '~/lib/handler/error';
 import { safeHandler } from '~/lib/handler/safe-handler';
 
 export const GET = safeHandler<{ customerId: string }>(async (_, { params }): Promise<NextResponse<TResponse<Customer>>> => {
   const { customerId } = await params;
-  const data = await db.customer.findUnique({
+  const data = await prisma.customer.findUnique({
     where: { id: Number(customerId) },
     include: {
       user: {
@@ -33,7 +33,7 @@ export const PUT = safeHandler<{ customerId: string }>(async (req, { params }): 
   const { customerId } = await params;
   const body = await req.json();
   const parsed = customerUpdateSchema.parse(body);
-  const updated = await db.customer.update({
+  const updated = await prisma.customer.update({
     where: { id: Number(customerId) },
     data: parsed,
     include: {
@@ -56,7 +56,7 @@ export const PUT = safeHandler<{ customerId: string }>(async (req, { params }): 
 
 export const DELETE = safeHandler<{ customerId: string }>(async (_, { params }): Promise<NextResponse<TResponse>> => {
   const { customerId } = await params;
-  await db.customer.delete({
+  await prisma.customer.delete({
     where: { id: Number(customerId) },
   });
   return NextResponse.json({ message: 'Client deleted' }, { status: 204 });

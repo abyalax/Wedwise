@@ -5,8 +5,8 @@ import { toast } from 'react-toastify';
 
 import { QUERY_KEY } from '~/common/const/querykey';
 import { TResponse } from '~/common/types/response';
+import { updateCustomer } from '~/data/customers/customer.api';
 import type { UpdateUser } from '~/db/schema.d';
-import { updateCustomer } from '~/modules/customers/customer.api';
 
 export const useUpdateCustomer = (customerId: string) => {
   const { back } = useRouter();

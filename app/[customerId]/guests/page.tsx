@@ -1,20 +1,11 @@
-import { Metadata } from 'next';
-
-import { PERMISSIONS } from '~/common/const/permission';
 import { MetaRequest } from '~/common/types/meta';
 import { PageScreen } from '~/components/layouts/page';
 import type { Guest } from '~/db/schema.d';
 import { getQueryClient } from '~/lib/query/client';
 import { Component } from './_components';
 import { queryGetGuests } from './_hooks/use-get-guests';
+import './_meta'
 
-export const metadata: Metadata = {
-  title: 'Guests Management | Dashboard',
-  description: 'Manage guest accounts, roles, and permissions in the admin dashboard',
-  keywords: 'guests, management, admin, roles, permissions',
-};
-
-export const permissions = [PERMISSIONS.CUSTOMER.READ_INVITATION, PERMISSIONS.CUSTOMER.DELETE_INVITATION];
 const breadcrumbItems = (customerId: string) => [
   {
     title: 'Dashboard',

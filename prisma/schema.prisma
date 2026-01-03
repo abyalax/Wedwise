@@ -128,7 +128,7 @@ model UserRole {
   @@map("user_roles")
 }
 
-/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+/// This model contains an expserression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
 model User {
   id        Int        @id @default(autoincrement())
   name      String     @db.VarChar(255)

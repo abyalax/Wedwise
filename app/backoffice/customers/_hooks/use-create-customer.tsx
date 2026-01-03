@@ -5,8 +5,8 @@ import { toast } from 'react-toastify';
 
 import { QUERY_KEY } from '~/common/const/querykey';
 import { TResponse } from '~/common/types/response';
+import { createCustomer } from '~/data/customers/customer.api';
 import type { CreateUser } from '~/db/schema.d';
-import { createCustomer } from '~/modules/customers/customer.api';
 
 export const useCreateCustomer = () => {
   const { back } = useRouter();

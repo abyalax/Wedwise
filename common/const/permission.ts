@@ -12,7 +12,7 @@ export const ROLEIDS: Record<roles, number> = {
 
 export const PERMISSIONS = {
   ADMIN: {
-    MANAGE_CUSTOMERS: 'customer:*',
+    MANAGE_CUSTOMERS: 'customers:*',
     MANAGE_INVITATIONS: 'invitations:*',
     MANAGE_PAYMENTS: 'payments:*',
   },

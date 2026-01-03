@@ -37,7 +37,6 @@ export async function userSeeder() {
       { key: 'customer:read_guest', name: 'Customer Read Guest' },
       { key: 'customer:update_guest', name: 'Customer Update Guest' },
       { key: 'customer:delete_guest', name: 'Customer Delete Guest' },
-      { key: 'customer:*', name: 'Manage Customers' },
 
       // GUEST
       { key: 'guest:view_invitation', name: 'Guest View Invitation' },
@@ -48,6 +47,7 @@ export async function userSeeder() {
       // ADMIN
       { key: 'invitations:*', name: 'Manage Invitations' },
       { key: 'payments:*', name: 'Manage Payments' },
+      { key: 'customers:*', name: 'Manage Customers' },
     ],
   });
 
@@ -106,7 +106,7 @@ export async function userSeeder() {
       { roleId: roleIds.Guest, permissionId: permissionIds['guest:send_wishes'] },
 
       // ADMIN
-      { roleId: roleIds.Admin, permissionId: permissionIds['customer:*'] },
+      { roleId: roleIds.Admin, permissionId: permissionIds['customers:*'] },
       { roleId: roleIds.Admin, permissionId: permissionIds['invitations:*'] },
       { roleId: roleIds.Admin, permissionId: permissionIds['payments:*'] },
     ],

@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
 
 import { env } from '~/common/const/credential';
-import { db } from '~/db';
+import { prisma } from '~/db/prisma/client';
 import { UnauthorizedException, UnprocessableEntity } from '~/lib/handler/error';
 import { safeHandler } from '~/lib/handler/safe-handler';
 
@@ -13,13 +13,13 @@ export const POST = safeHandler(async (req: NextRequest) => {
   const verifyToken = jwt.verify(token, env.JWT_SECRET) as { email: string };
   if (!verifyToken) throw new UnauthorizedException('Token Expired');
 
-  const findByEmail = await db.user.findFirst({
+  const findByEmail = await prisma.user.findFirst({
     where: { email: verifyToken.email },
   });
   if (findByEmail) throw new UnprocessableEntity('Email already exist');
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  const updated = await db.user.update({
+  const updated = await prisma.user.update({
     where: { email: verifyToken.email },
     data: { password: hashedPassword },
   });

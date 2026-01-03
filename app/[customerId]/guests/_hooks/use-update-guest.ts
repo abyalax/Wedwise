@@ -5,8 +5,8 @@ import { toast } from 'react-toastify';
 
 import { QUERY_KEY } from '~/common/const/querykey';
 import { TResponse } from '~/common/types/response';
+import { updateGuest } from '~/data/guests/guest.api';
 import type { UpdateGuest } from '~/db/schema.d';
-import { updateGuest } from '~/modules/guests/guest.api';
 
 export const useUpdateGuest = (customerId: string, guestId: string) => {
   const { back } = useRouter();

@@ -1,7 +1,7 @@
 import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
 
 import { QUERY_KEY } from '~/common/const/querykey';
-import { getGuest } from '~/modules/guests/guest.api';
+import { getGuest } from '~/data/guests/guest.api';
 
 export const queryGetGuest = (customerId: string, guestId: string) =>
   queryOptions({
