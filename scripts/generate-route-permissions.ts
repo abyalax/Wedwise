@@ -26,8 +26,8 @@ async function generateRoutePermissions() {
       const normalizePath = (p: string) => (p === '/' ? '/' : p.replace(/\/+$/, ''));
       const routePath = normalizePath(parsed === '' ? '/' : `/${parsed.replace(/\\/g, '/')}`);
 
-      if (Array.isArray(mod.default)) {
-        basePermissions[routePath] = mod.default;
+      if (Array.isArray(mod.permissions)) {
+        basePermissions[routePath] = mod.permissions;
       } else {
         basePermissions[routePath] = [];
         console.warn(`⚠️  No permissions exported in ${relativeFile}`);
