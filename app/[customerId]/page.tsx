@@ -1,5 +1,6 @@
-import { PageScreen } from "~/components/layouts/page";
-import './_meta'
+import { PageScreen } from '~/components/layouts/page';
+import './_meta';
+import DashboardPage from './_components';
 
 const breadcrumbItems = (customerId: string) => [
   {
@@ -20,5 +21,9 @@ export default async function Page({ params }: Props) {
   const { customerId } = await params;
   const breadcrumbs = breadcrumbItems(customerId);
 
-  return <PageScreen title="Dashboard" breadcrumbs={breadcrumbs} />;
+  return (
+    <PageScreen title="Dashboard" breadcrumbs={breadcrumbs}>
+      <DashboardPage />
+    </PageScreen>
+  );
 }

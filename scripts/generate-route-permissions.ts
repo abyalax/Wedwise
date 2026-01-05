@@ -179,5 +179,3 @@ async function main() {
 }
 
 main().then().catch(console.error);
-
-// if (require.main === module) main().catch(console.error);

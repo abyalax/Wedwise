@@ -48,6 +48,28 @@
   --sidebar-accent-foreground: #ca9a8e;
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* WedWise Custom Tokens */
+  --rose-gold: #e6a09c;
+  --rose-gold-dark: #d08a85;
+  --champagne: #f7e6d9;
+  --sage: #b7d2c1;
+  --blush: #f8e1ea;
+  --cream: #fbf6ec;
+
+  /* =========================
+       GRADIENTS
+       ========================= */
+  --romantic: linear-gradient(135deg, var(--primary), var(--rose-gold-dark));
+  --soft: linear-gradient(180deg, var(--background), var(--champagne));
+  --card-hover: linear-gradient(135deg, rgba(248, 225, 234, 0.5), rgba(247, 230, 217, 0.5));
+
+  /* =========================
+       SHADOWS
+       ========================= */
+  --shadow-card: 0 4px 20px -4px rgba(0, 0, 0, 0.08);
+  --shadow-card-hover: 0 12px 32px -8px rgba(230, 160, 156, 0.35);
+  --shadow-float: 0 20px 40px -12px rgba(0, 0, 0, 0.12);
 }
 
 @theme inline {
@@ -86,6 +108,21 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-rose-gold: var(--rose-gold);
+  --color-rose-gold-dark: var(--rose-gold-dark);
+  --color-champagne: var(--champagne);
+  --color-sage: var(--sage);
+  --color-blush: var(--blush);
+  --color-cream: var(--cream);
+
+  --color-romantic: var(--romantic);
+  --color-soft: var(--soft);
+  --color-card-hover: var(--card-hover);
+
+  --color-shadow-card: var(--shadow-card);
+  --color-shadow-card-hover: var(--shadow-card-hover);
+  --color-shadow-float: var(--shadow-float);
 }
 
 .dark {
@@ -120,6 +157,17 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  --rose-gold: #b97772;
+  --rose-gold-dark: #9f5f5a;
+  --champagne: #5a4634;
+  --sage: #4c6a5a;
+  --blush: #4a1f2c;
+  --cream: #3b2b20;
+
+  --shadow-card: 0 4px 20px -4px rgba(0, 0, 0, 0.3);
+  --shadow-card-hover: 0 12px 32px -8px rgba(185, 119, 114, 0.4);
+  --shadow-float: 0 20px 40px -12px rgba(0, 0, 0, 0.45);
 }
 
 @layer base {

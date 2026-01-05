@@ -1,3 +1,5 @@
+import type { Conversation } from './conversation.types';
+
 // Guest entity types for frontend
 export type GuestStatus = 'Invited' | 'Attending' | 'NotAttending' | 'Declined' | 'Maybe';
 
@@ -47,8 +49,6 @@ export interface GuestWithInvitation extends Guest {
 export interface GuestWithConversations extends Guest {
   conversations: Conversation[];
 }
-
-import type { Conversation } from './conversation.types';
 
 export interface GuestWithConversationsAndInvitationRaw extends Guest {
   conversations: Conversation[];

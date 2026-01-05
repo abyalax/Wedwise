@@ -1,5 +1,5 @@
 import { dehydrate } from '@tanstack/react-query';
-import './globals.css';
+import './colorfull.css';
 
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
@@ -70,7 +70,7 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
   const queryClient = getQueryClient();
   return (
     <html lang="en" suppressHydrationWarning>
-    <body className={`${font.className} antialiased`}>
+      <body className={`${font.className} antialiased`}>
         <Providers dehydratedState={dehydrate(queryClient)}>{children}</Providers>
       </body>
     </html>

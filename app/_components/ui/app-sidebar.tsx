@@ -145,8 +145,8 @@ export function AppSidebar({ appLogo, appName, appDescription }: AppSidebarProps
           {appLogo}
           {state !== 'collapsed' && (
             <div className="flex flex-col min-w-0">
-              <span className="font-semibold text-sm truncate">{appName ?? 'Next Boilerplate'}</span>
-              <span className="text-xs text-muted-foreground">{appDescription ?? 'Next Boilerplate'}</span>
+              <span className="font-semibold text-sm truncate">{appName ?? 'Wedwise'}</span>
+              <span className="text-xs text-muted-foreground">{appDescription ?? 'Wedwise'}</span>
             </div>
           )}
         </div>

@@ -26,12 +26,8 @@ export const navigationCustomer = (customerId: string) => [
 ];
 
 export const navigationGuest = [
-  { name: 'Home', href: '/' },
   { name: 'Order', href: '/order' },
   { name: 'Pricing', href: '/pricing' },
-
-  /**Just For Development */
-  { name: 'Guest', href: '/' },
-  { name: 'Customer', href: '/1' },
-  { name: 'Admin', href: '/backoffice' },
+  { name: 'Themes', href: '/themes' },
+  { name: 'Feature', href: '/features' },
 ];

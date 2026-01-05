@@ -7,93 +7,10 @@ datasource db {
   provider = "postgresql"
 }
 
-model Conversation {
-  id               Int       @id @default(autoincrement())
-  guest_id         Int?
-  messages         Json
-  last_interaction DateTime? @default(now()) @db.Timestamp(6)
-  created_at       DateTime? @default(now()) @db.Timestamp(6)
-  updated_at       DateTime? @default(now()) @db.Timestamp(6)
-  guests           Guest?   @relation(fields: [guest_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "conversation_guest_id_guests_id_fk")
-
-  @@map("conversations")
-}
-
-model Customer {
-  id          Int            @id @default(autoincrement())
-  user_id     Int            @unique(map: "customers_user_id_unique")
-  theme       String         @default("classic") @db.VarChar(100)
-  status      CustomerStatus @default(Active)
-  note        String?        @db.VarChar(150)
-  user        User           @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "customers_user_id_users_id_fk")
-  invitations Invitation[]
-
-  @@map("customers")
-}
-
-model Feature {
-  id                  Int                   @id @default(autoincrement())
-  name                String                @db.VarChar(100)
-  description         String?               @db.VarChar(255)
-  is_active           Boolean               @default(true)
-  created_at          DateTime?             @default(now()) @db.Timestamp(6)
-  updated_at          DateTime?             @default(now()) @db.Timestamp(6)
-  invitation_features InvitationFeature[]
-
-  @@map("features")
-}
-
-/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
-model Guest {
-  id            Int            @id @default(autoincrement())
-  invitation_id Int
-  phone         String         @db.VarChar(15)
-  name          String         @db.VarChar(150)
-  participant   Int            @default(1)
-  status        GuestStatus
-  note          String?        @db.VarChar(255)
-  rsvp_at       DateTime?      @db.Timestamp(6)
-  created_at    DateTime?      @default(now()) @db.Timestamp(6)
-  updated_at    DateTime?      @default(now()) @db.Timestamp(6)
-  conversation  Conversation[]
-  invitations   Invitation    @relation(fields: [invitation_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "guests_invitation_id_invitations_id_fk")
-
-  @@index([phone], map: "guest_phone_index")
-  @@map("guests")
-}
-
-model InvitationFeature {
-  invitation_id Int
-  feature_id    Int
-  is_enabled    Boolean?    @default(true)
-  created_at    DateTime?   @default(now()) @db.Timestamp(6)
-  updated_at    DateTime?   @default(now()) @db.Timestamp(6)
-  features      Feature    @relation(fields: [feature_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "invitation_features_feature_id_features_id_fk")
-  invitations   Invitation @relation(fields: [invitation_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "invitation_features_invitation_id_invitations_id_fk")
-
-  @@id([invitation_id, feature_id], map: "invitation_features_invitation_id_feature_id_pk")
-  @@map("invitation_features")
-}
-
-model Invitation {
-  id                  Int                   @id @default(autoincrement())
-  customer_id         Int
-  name                String                @db.VarChar(150)
-  theme               String                @db.VarChar(100)
-  wedding_date        DateTime              @db.Date
-  ai_context          String?
-  created_at          DateTime?             @default(now()) @db.Timestamp(6)
-  updated_at          DateTime?             @default(now()) @db.Timestamp(6)
-  guests              Guest[]
-  invitation_features InvitationFeature[]
-  customer            Customer              @relation(fields: [customer_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "invitations_customer_id_customers_id_fk")
-  @@map("invitations")
-}
-
 model Permission {
-  id             Int              @id @default(autoincrement())
-  key            String           @unique(map: "permissions_key_unique") @db.VarChar(100)
-  name           String           @db.VarChar(100)
+  id              Int              @id @default(autoincrement())
+  key             String           @unique(map: "permissions_key_unique") @db.VarChar(100)
+  name            String           @db.VarChar(100)
   rolePermissions RolePermission[]
 
   @@map("permissions")
@@ -110,10 +27,10 @@ model RolePermission {
 }
 
 model Role {
-  id             Int              @id @default(autoincrement())
-  name           String           @unique(map: "roles_name_unique") @db.VarChar(100)
+  id              Int              @id @default(autoincrement())
+  name            String           @unique(map: "roles_name_unique") @db.VarChar(100)
   rolePermissions RolePermission[]
-  userRoles      UserRole[]
+  userRoles       UserRole[]
 
   @@map("roles")
 }
@@ -128,7 +45,6 @@ model UserRole {
   @@map("user_roles")
 }
 
-/// This model contains an expserression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
 model User {
   id        Int        @id @default(autoincrement())
   name      String     @db.VarChar(255)
@@ -141,15 +57,235 @@ model User {
   @@map("users")
 }
 
-enum CustomerStatus {
-  Active
-  In_Active @map("In Active")
+model Agent {
+  id           Int    @id @default(autoincrement())
+  name         String
+  systemPrompt String
+  context      String
+  provider     String
+  model        String
+  apiKey       String
+
+  @@map("agents")
 }
 
-enum GuestStatus {
-  Invited
-  Attending
-  NotAttending
-  Declined
-  Maybe
+model Customer {
+  id     Int @id @default(autoincrement())
+  userId Int @unique
+
+  note String?
+
+  user   User             @relation(fields: [userId], references: [id])
+  status StatusActivation @default(Active)
+  orders Order[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("customers")
+}
+
+model Feature {
+  id          Int     @id @default(autoincrement())
+  code        String  @unique
+  name        String
+  description String?
+  price       String
+
+  status          StatusActivation
+  packageFeatures PackageFeature[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  theme     Theme?   @relation(fields: [themeId], references: [id])
+  themeId   Int?
+
+  @@map("features")
+}
+
+model Package {
+  id          Int     @id @default(autoincrement())
+  code        String  @unique
+  name        String
+  description String?
+  price       String
+
+  status   StatusActivation
+  features PackageFeature[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("packages")
+}
+
+model PackageFeature {
+  packageId Int
+  featureId Int
+
+  package Package @relation(fields: [packageId], references: [id])
+  feature Feature @relation(fields: [featureId], references: [id])
+
+  @@id([packageId, featureId])
+  @@map("package_features")
+}
+
+model Guest {
+  id           Int @id @default(autoincrement())
+  invitationId Int
+
+  name        String
+  phone       String
+  participant Int       @default(1)
+  rsvpAt      DateTime?
+
+  conversation Conversation?
+
+  invitation Invitation @relation(fields: [invitationId], references: [id])
+
+  @@index([phone])
+  @@map("guests")
+}
+
+model Conversation {
+  id      Int @id @default(autoincrement())
+  guestId Int @unique
+
+  messages Json
+
+  guest Guest @relation(fields: [guestId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("conversations")
+}
+
+model Invitation {
+  id      Int @id @default(autoincrement())
+  orderId Int @unique
+
+  aiContext String
+  groomName String
+  brideName String
+  themeCode String
+  contents  Json
+
+  guests Guest[]
+  order  Order   @relation(fields: [orderId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("invitations")
+}
+
+model Theme {
+  id    Int    @id @default(autoincrement())
+  slug  String @unique
+  name  String
+  image String
+  code  String
+
+  categoryId Int
+  status     StatusActivation
+
+  category ThemeCategory @relation(fields: [categoryId], references: [id])
+  features Feature[]
+  orders   Order[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("themes")
+}
+
+model ThemeCategory {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  themes Theme[]
+
+  @@map("theme_categories")
+}
+
+model Payment {
+  id      Int @id @default(autoincrement())
+  orderId Int
+
+  provider PaymentProvider
+  method   String
+  amount   String
+
+  status  PaymentStatus
+  payload Json?
+
+  order Order @relation(fields: [orderId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@map("payments")
+}
+
+model Order {
+  id         Int  @id @default(autoincrement())
+  customerId Int?
+
+  status     OrderStatus
+  totalPrice String
+
+  themeSnapshot   Json
+  packageSnapshot Json
+
+  items      OrderItem[]
+  invitation Invitation?
+  payments   Payment[]
+
+  customer Customer? @relation(fields: [customerId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  theme     Theme?   @relation(fields: [themeId], references: [id])
+  themeId   Int?
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id      Int @id @default(autoincrement())
+  orderId Int
+
+  featureCode  String
+  featureName  String
+  featurePrice String
+
+  order Order @relation(fields: [orderId], references: [id])
+
+  @@map("order_items")
+}
+
+enum StatusActivation {
+  Active
+  InActive @map("In Active")
+}
+
+enum OrderStatus {
+  Draft
+  InProgress     @map("In Progress")
+  WaitingPayment @map("Waiting Payment")
+  Paid           @map("Paid")
+  Cancelled      @map("Cancelled")
+}
+
+enum PaymentStatus {
+  Pending
+  Success
+  Failed
+  Expired
+}
+
+enum PaymentProvider {
+  MIDTRANS
+  XENDIT
+  SHOPEE
 }

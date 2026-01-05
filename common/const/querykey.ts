@@ -27,6 +27,13 @@ export const QUERY_KEY = {
     UPDATE_INVITATION: 'update_invitation',
     DELETE_INVITATION: 'delete_invitation',
   },
+  THEMES: {
+    GETS: 'get_themes',
+    GET_BY_ID: 'get_theme_by_id',
+    CREATE: 'create_theme',
+    UPDATE: 'update_theme',
+    DELETE: 'delete_theme',
+  },
 } as const;
 
 export type QueryKey<T = string> = ExtractString<typeof QUERY_KEY> & T;

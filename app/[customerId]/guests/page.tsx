@@ -3,8 +3,7 @@ import { PageScreen } from '~/components/layouts/page';
 import type { Guest } from '~/db/schema.d';
 import { getQueryClient } from '~/lib/query/client';
 import { Component } from './_components';
-import { queryGetGuests } from './_hooks/use-get-guests';
-import './_meta'
+import { queryGetGuests } from './_hooks/use-get-guests-prod';
 
 const breadcrumbItems = (customerId: string) => [
   {

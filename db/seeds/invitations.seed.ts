@@ -5,39 +5,64 @@ export async function invitationSeeder() {
   // --- RESET DATA ---
   await prisma.$executeRawUnsafe(`
     TRUNCATE TABLE
-      "features",
-      "invitation_features",
       "invitations"
     RESTART IDENTITY CASCADE;
   `);
 
-  // --- FEATURES ---
-  const featuresData: Prisma.FeatureCreateManyInput[] = [
-    { name: 'Countdown', description: 'Hitung mundur di halaman digital invitation' },
-    { name: 'Audio Music', description: 'Background music untuk halaman digital invitation' },
-    { name: 'Galery Pengantin', description: 'Gallery pengantin yang dapat diakses oleh tamu di undangan digital' },
-    { name: 'Story Pengantin', description: 'Kisah perjalanan pengantin untuk dibaca oleh tamu di undangan digital' },
-    { name: 'RSVP', description: 'RSVP untuk undangan digital, bisa melalui website atau melalui whatsapp dengan chatbot' },
-    { name: 'Whatsapp Broadcast', description: 'Broadcast whatsapp kepada tamu undangan untuk reminder kepada tamu undangan' },
-    { name: 'Chatbot', description: 'Chatbot sebagai customer service untuk kebutuhan tamu undangan, dapat di integrasikan ke whatsapp' },
-  ];
+  const contents = {
+    location: {
+      name: 'Gedung Serbaguna XYZ',
+      address: 'Jl. Mawar No. 10, Jakarta',
+      mapUrl: 'https://maps.google.com/...',
+    },
+    audio: {
+      enabled: true,
+      url: '/music/akad.mp3',
+      loop: true,
+    },
+    stories: [
+      {
+        title: 'Pertemuan Pertama',
+        date: '2019-03-12',
+        content: 'Kami bertemu di kampus...',
+      },
+      {
+        title: 'Lamaran',
+        date: '2023-06-01',
+        content: 'Momen spesial...',
+      },
+    ],
 
-  await prisma.feature.createMany({
-    data: featuresData,
-  });
+    events: {
+      akad: {
+        date: '2024-08-10T08:00:00Z',
+        note: 'Akad nikah tertutup',
+      },
+      resepsi: {
+        date: '2024-08-10T11:00:00Z',
+        note: 'Resepsi terbuka',
+      },
+    },
 
-  const features = await prisma.feature.findMany({
-    select: { id: true, name: true },
-  });
+    galleries: ['/img/1.jpg', '/img/2.jpg'],
 
-  // --- INVITATIONS ---
-  const invitationsData = [
+    rekening: [
+      {
+        bank: 'BCA',
+        name: 'Ahmad',
+        number: '1234567890',
+      },
+    ],
+  };
+
+  const invitationsData: Prisma.InvitationCreateManyInput[] = [
     {
-      customer_id: 1,
-      wedding_date: new Date('2025-12-13'),
-      theme: 'classic',
-      name: 'Wedding Invitation',
-      ai_context: 'pernikahan kami memakai tema classic, sarankan pada tamu agar menggunakan pakaian putih agar match dengan tema kami',
+      orderId: 1,
+      aiContext: 'pernikahan kami memakai tema classic, sarankan pada tamu agar menggunakan pakaian putih agar match dengan tema kami',
+      brideName: 'Selvy Rirantri',
+      groomName: 'Putra Cipto Mangunkusumo',
+      themeCode: 'T-CLASSIC',
+      contents,
     },
   ];
 
@@ -45,28 +70,5 @@ export async function invitationSeeder() {
     data: invitationsData,
   });
 
-  const invitations = await prisma.invitation.findMany({
-    select: { id: true, name: true },
-  });
-
-  // --- INVITATION FEATURES (M2M) ---
-  const invitationFeaturesData = [];
-
-  for (const invitation of invitations) {
-    for (const feature of features) {
-      invitationFeaturesData.push({
-        invitation_id: invitation.id,
-        feature_id: feature.id,
-        is_enabled: true,
-      });
-    }
-  }
-
-  if (invitationFeaturesData.length > 0) {
-    await prisma.invitationFeature.createMany({
-      data: invitationFeaturesData,
-    });
-  }
-
-  console.log('✅ Seeding features, invitations, and invitation_features relations done!');
+  console.log('✅ Seeding invitations success');
 }

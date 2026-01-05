@@ -5,7 +5,17 @@ import { env } from './common/const/credential';
 import { routePermissions } from './lib/routes/permissions';
 import { matchPermission } from './lib/utils';
 
-const publicRoutes = ['/auth/register', '/auth/login', '/auth/forgot-password', '/auth/reset-password'];
+const publicRoutes = [
+  '/auth/register',
+  '/auth/login',
+  '/auth/forgot-password',
+  '/auth/reset-password',
+  '/order',
+  '/pricing',
+  '/invitations',
+  '/themes',
+  '/features',
+];
 
 function getRequiredPermissions(pathname: string): string[] {
   if (routePermissions[pathname]) return routePermissions[pathname];

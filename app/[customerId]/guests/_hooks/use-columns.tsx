@@ -1,8 +1,9 @@
 import { createColumnHelper } from '@tanstack/react-table';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 import { Checkbox } from '~/components/ui/checkbox';
 import type { Guest } from '~/db/schema.d';
 import { useDeleteGuest } from './use-delete-guest';
@@ -17,6 +18,10 @@ type Params = {
 export const useColumns = ({ defaultVisible }: Params) => {
   const { customerId } = useParams<{ customerId: string }>();
   const { mutate: deleteClient } = useDeleteGuest(customerId);
+
+  const handleEditGuest = useCallback((guest: Guest) => {
+    toast.info(`Fitur edit untuk ${guest.name} akan segera tersedia.`);
+  }, []);
 
   const columns = useMemo(
     () => [
@@ -68,7 +73,10 @@ export const useColumns = ({ defaultVisible }: Params) => {
           <div className="flex items-center gap-2">
             <Link
               href={`/${customerId}/guests/${info.row.original.id}/update`}
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleEditGuest(info.row.original);
+              }}
               className="text-gray-700 hover:text-blue-600"
             >
               <FaPencilAlt />
@@ -87,7 +95,7 @@ export const useColumns = ({ defaultVisible }: Params) => {
         ),
       }),
     ],
-    [deleteClient, customerId],
+    [deleteClient, customerId, handleEditGuest],
   );
 
   const columnIds = useMemo(() => columns.map((col) => col.id), [columns]);

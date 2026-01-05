@@ -10,7 +10,6 @@ praktis, modern, dan terorganisir dengan baik. Layanan ini dikembangkan dengan
 pendekatan kolaboratif bersama vendor Wedding Organizer untuk menyesuaikan
 produk dengan kebutuhan pasar pernikahan modern.
 ```
-
 Role
 1. Guest =>    : Tamu undangan yang membuka undangan (tidak perlu login, hanya buka link) 
 2. Customer => : Pemilik undangan 
@@ -21,6 +20,18 @@ Flow
 2. Customer Register dan Login, kemudian request digital invitation, payment dan akan dibuatkan dashboard untuk customer ini  
 3. di dashboard customer akan mendaftakan siapa saja guest yang akan mendapat kan link undangan, includes no WA untuk integrasi layanan chatbot di WA
 4. Link di sebar oleh customer, guest klik link (digital invitation) dan akan mendapat chat dari chatbot untuk berbagai keperluan acara undangan
+
+Flow admin masuk ke dashboard
+- list customer
+  ada availability untuk check traffic undangan digital dan message chatbot yang di gunakan
+- list feature
+- list tema website undangan
+    berbentuk table dengan data (metadata) dan link preview
+    ada expandable row untuk melihat preview kecil (image 400 X 400)
+- list pembayaran / invoice
+- list agent AI
+- traffic message agent AI 
+- config payment
 
 Detail Digital Invitations (full feature version)
 1. Digital Invitation
@@ -40,9 +51,6 @@ Detail Admin Panel Customer
 2. Builder Digital Invitations (standar from theme exist)
 3. Inject Context invitation untuk di pakai oleh AI (add fallback to customer if AI can't help chatting)
 4. Halaman untuk pantau chatting chatbot dengan tamu undangan 
-
-kita design dulu aja schemanya, 
-so kita butuh 
 
 1. feature => list feature yang ada di wedwise, di kelola oleh admin
    - Digital Invitation

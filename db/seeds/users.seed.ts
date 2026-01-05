@@ -1,12 +1,10 @@
 import bcrypt from 'bcrypt';
 import { prisma } from '~/db/prisma/client';
-import { invitationSeeder } from './invitations.seed';
 
 export async function userSeeder() {
   // --- RESET DATA ---
   await prisma.$executeRawUnsafe(`
     TRUNCATE TABLE
-      "guests",
       "customers",
       "role_permissions",
       "user_roles",
@@ -29,10 +27,12 @@ export async function userSeeder() {
     data: [
       // CUSTOMER
       { key: 'customer:read_profile', name: 'Customer Read Profile' },
+
       { key: 'customer:create_invitation', name: 'Customer Create Invitation' },
       { key: 'customer:read_invitation', name: 'Customer Read Invitation' },
       { key: 'customer:update_invitation', name: 'Customer Update Invitation' },
       { key: 'customer:delete_invitation', name: 'Customer Delete Invitation' },
+
       { key: 'customer:create_guest', name: 'Customer Create Guest' },
       { key: 'customer:read_guest', name: 'Customer Read Guest' },
       { key: 'customer:update_guest', name: 'Customer Update Guest' },
@@ -115,35 +115,9 @@ export async function userSeeder() {
   // --- CUSTOMER ---
   await prisma.customer.create({
     data: {
-      user_id: userIds['customer@gmail.com'],
-      theme: 'classic',
+      userId: userIds['customer@gmail.com'],
       status: 'Active',
-      note: 'Customer pertama',
+      note: 'Customer Pertama',
     },
-  });
-
-  // --- INVITATION ---
-  await invitationSeeder();
-
-  // --- GUESTS ---
-  await prisma.guest.createMany({
-    data: [
-      {
-        invitation_id: 1,
-        name: 'Budi Santoso',
-        phone: '087765290292',
-        participant: 3,
-        status: 'Invited',
-        note: 'Bawa keluarga kecil',
-      },
-      {
-        invitation_id: 1,
-        name: 'Siti Aminah',
-        phone: '087765290291',
-        participant: 2,
-        status: 'Invited',
-        note: null,
-      },
-    ],
   });
 }

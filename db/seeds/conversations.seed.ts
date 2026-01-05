@@ -1,13 +1,11 @@
 import { prisma } from '~/db/prisma/client';
 
 export async function conversationSeeder() {
-  // --- RESET DATA ---
   await prisma.$executeRawUnsafe(`
     TRUNCATE TABLE "conversations"
     RESTART IDENTITY CASCADE;
   `);
 
-  // timestamp awal
   const now = new Date();
 
   const mockMessages = [
@@ -24,14 +22,12 @@ export async function conversationSeeder() {
     },
   ];
 
-  // --- INSERT CONVERSATION ---
   await prisma.conversation.create({
     data: {
-      guest_id: 1,
-      last_interaction: new Date(),
-      messages: mockMessages, // ⬅️ JSON native
+      guestId: 1,
+      messages: mockMessages,
     },
   });
 
-  console.log('✅ Seeding conversations done!');
+  console.log('✅ Seeding conversations success');
 }
