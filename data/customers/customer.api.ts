@@ -1,6 +1,7 @@
+import { FormDataCustomer } from '~/app/backoffice/customers/_components/form/schema';
 import { MetaRequest, MetaResponse } from '~/common/types/meta';
 import { TAxiosResponse } from '~/common/types/response';
-import type { CreateUser, Customer, UpdateUser } from '~/db/schema.d';
+import { Customer } from '~/generated/prisma/browser';
 import { api } from '~/lib/axios/api';
 import { User } from '~/modules/users/users.type';
 
@@ -12,11 +13,11 @@ export const getCustomer = async (customerId: string): Promise<TAxiosResponse<Us
   return api.get(`/backoffice/customers/${customerId}`);
 };
 
-export const createCustomer = async (payload: CreateUser): Promise<TAxiosResponse<User>> => {
+export const createCustomer = async (payload: FormDataCustomer): Promise<TAxiosResponse<User>> => {
   return api.post(`/backoffice/customers`, { ...payload });
 };
 
-export const updateCustomer = async (customerId: string, payload: UpdateUser): Promise<TAxiosResponse<User>> => {
+export const updateCustomer = async (customerId: string, payload: FormDataCustomer): Promise<TAxiosResponse<User>> => {
   return api.put(`/backoffice/customers/${customerId}`, { ...payload });
 };
 

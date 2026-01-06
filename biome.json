@@ -15,7 +15,7 @@
       "!out",
       "!build",
       "!dist",
-      "!drizzle"
+      "!prisma"
     ]
   },
   "formatter": {
@@ -27,7 +27,7 @@
       "!out",
       "!build",
       "!dist",
-      "!drizzle"
+      "!prisma"
     ],
     "enabled": true,
     "indentWidth": 2,
@@ -73,7 +73,7 @@
   },
   "assist": {
     "enabled": true,
-    "includes": ["**/*.{js,jsx,ts,tsx,json,css,md}", "!node_modules", "!.next", "!out", "!build", "!dist", "!drizzle"],
+    "includes": ["**/*.{js,jsx,ts,tsx,json,css,md}", "!node_modules", "!.next", "!out", "!build", "!dist", "!prisma"],
     "actions": {
       "source": {
         "organizeImports": "on"

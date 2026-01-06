@@ -1,4 +1,4 @@
-import { Prisma } from '~/generated/prisma/client';
+import { OrderStatus, Prisma, StatusActivation } from '~/generated/prisma/client';
 import { prisma } from '../prisma/client';
 
 export async function orderSeeder() {
@@ -11,7 +11,8 @@ export async function orderSeeder() {
     slug: 'classic',
     name: 'Classic',
     image: 'https://abyalax.github.io/wedding-templates/classic/',
-    status: 'Active',
+    status: StatusActivation.ACTIVE,
+    code: 'T-CLASSIC',
     categoryId: 1,
   };
 
@@ -19,12 +20,12 @@ export async function orderSeeder() {
     code: 'P-BASIC',
     name: 'Package Basic',
     price: '125000',
-    status: 'Active',
+    status: StatusActivation.ACTIVE,
   };
 
   const orders: Prisma.OrderCreateManyInput[] = [
     {
-      status: 'Draft',
+      status: OrderStatus.DRAFT,
       totalPrice: '',
       themeSnapshot: themeSnapshot,
       packageSnapshot: packageSnapshot,

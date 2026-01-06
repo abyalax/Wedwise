@@ -1,20 +1,20 @@
-// import { CustomerRepository } from './schema';
+import { convertMetaPagination, prismaList, searchFilter } from './prisma/client';
 
-// /**
-//  * This is just for playground
-//  * developement query with orm drizzle
-//  * run with pnpm db:query
-//  */
-// async function main() {
-//   const data = await CustomerRepository.get();
-//   console.log(data);
-// }
+const fieldSearchable = ['name', 'phone'];
+const keySearch = 'Santoso';
 
-// main()
-//   .then(async () => {
-//     process.exit(0);
-//   })
-//   .catch(async (e) => {
-//     console.error(e);
-//     process.exit(1);
-//   });
+const [data, meta] = await prismaList.guest
+  .paginate({
+    where: {
+      invitationId: 1,
+      ...searchFilter(fieldSearchable, keySearch),
+    },
+  })
+  .withPages({
+    page: 1,
+    limit: 10,
+  });
+
+const metaPagination = convertMetaPagination(meta, 10);
+
+console.log({ data, metaPagination });

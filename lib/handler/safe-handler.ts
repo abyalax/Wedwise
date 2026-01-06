@@ -3,8 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
 import { env } from '~/common/const/credential';
-import type { Permission } from '~/types/entities/permission.types';
-
+import { Permission } from '~/generated/prisma/browser';
 import { handlers } from './handler';
 
 type Handler<T> = (req: NextRequest, context: { params: Promise<T> }) => Promise<NextResponse>;

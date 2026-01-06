@@ -1,4 +1,5 @@
 import type { AxiosResponse } from 'axios';
+import { MetaResponse } from './meta';
 
 export const Message = {
   TOKEN_NOT_FOUND: 'Token Not Found',
@@ -22,6 +23,11 @@ export type TResponse<T = unknown> = {
   message?: string;
   error?: unknown[];
   data?: T;
+};
+
+export type TListPagination<T> = {
+  items: T[];
+  meta: MetaResponse;
 };
 
 export type TAxiosResponse<T = unknown> = AxiosResponse<TResponse<T>>;

@@ -1,17 +1,17 @@
 import { Check, Clock, UserCheck, Users, X } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
-import { Guest } from '../guests/_types';
+import { Guest } from '~/generated/prisma/browser';
 
 interface GuestStatsCardProps {
   guests: Guest[];
 }
 
 export function GuestStatsCard({ guests }: GuestStatsCardProps) {
-  const confirmed = guests.filter((g) => g.rsvpStatus === 'confirmed');
-  const pending = guests.filter((g) => g.rsvpStatus === 'pending');
-  const declined = guests.filter((g) => g.rsvpStatus === 'declined');
+  const confirmed = guests.filter((g) => g.rsvpStatus === 'CONFIRMED');
+  const pending = guests.filter((g) => g.rsvpStatus === 'PENDING');
+  const declined = guests.filter((g) => g.rsvpStatus === 'DECLINED');
 
-  const totalAttendees = confirmed.reduce((acc, g) => acc + g.numberOfGuests, 0);
+  const totalAttendees = confirmed.reduce((acc, g) => acc + g.participant, 0);
 
   const stats = [
     {

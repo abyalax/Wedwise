@@ -1,4 +1,4 @@
-import { Prisma } from '~/generated/prisma/client';
+import { Prisma, StatusActivation } from '~/generated/prisma/client';
 import { prisma } from '../prisma/client';
 
 export async function themeSeeder() {
@@ -24,7 +24,7 @@ export async function themeSeeder() {
       name: 'Classic',
       image: 'https://abyalax.github.io/wedding-templates/classic/',
       slug: 'classic',
-      status: 'Active',
+      status: StatusActivation.ACTIVE,
       code: 'T-CLASSIC',
     },
   ];

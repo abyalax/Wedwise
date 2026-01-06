@@ -12,12 +12,7 @@ export const Component: FC = () => {
   const { customerId } = useParams<{ customerId: string }>();
   const { mutate, isPending } = useCreateGuest(customerId);
 
-  const handleSubmit = (data: FormDataGuest) => {
-    mutate({
-      ...data,
-      participant: Number(data.participant),
-    });
-  };
+  const handleSubmit = (data: FormDataGuest) => mutate(data);
 
   return (
     <Flex className="flex-1 items-center justify-center">

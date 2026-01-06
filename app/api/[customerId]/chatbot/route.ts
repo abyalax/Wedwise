@@ -1,7 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 import { NextResponse } from 'next/server';
 import { env } from '~/common/const/credential';
-import type { ConversationMessages } from '~/types/entities/conversation.types';
 import { safeHandler } from '~/lib/handler/safe-handler';
 
 function parseMessage(content: string): string {
@@ -10,6 +9,14 @@ function parseMessage(content: string): string {
     .replace(/[.]{2,}/g, '...') // multiple dots
     .slice(0, 200); // hard limit per message
 }
+
+interface ConversationMessage {
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: string; // ISO date string
+}
+
+type ConversationMessages = ConversationMessage[];
 
 export const POST = safeHandler(async (req): Promise<NextResponse<{ message: string; history: ConversationMessages }>> => {
   const body = await req.json();

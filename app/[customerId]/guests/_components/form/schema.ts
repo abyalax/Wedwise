@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { GuestStatus } from '~/generated/prisma/enums';
+import { RSVPStatus } from '~/generated/prisma/enums';
 
 export const guestSchema = z.object({
   name: z.string().min(1, { message: 'Guest name is required' }),
@@ -11,7 +11,7 @@ export const guestSchema = z.object({
     .transform((val) => val.toString()),
   note: z.string().max(255, { message: 'Guest note is too long' }),
   invitationId: z.number().min(1, { message: 'Guest invitation is required' }),
-  status: z.enum(['Invited', 'Attending', 'NotAttending', 'Declined', 'Maybe'] as GuestStatus[]),
+  rsvpStatus: z.enum(['ATTENDED', 'CONFIRMED', 'DECLINED', 'NOTAVAILABLE', 'PENDING', 'REPRESENTED'] as RSVPStatus[]),
 });
 
 export type FormDataGuest = z.output<typeof guestSchema>;

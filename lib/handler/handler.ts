@@ -1,10 +1,9 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: <> */
-import { DrizzleError, DrizzleQueryError } from 'drizzle-orm';
+
+import { PrismaClientRustPanicError, PrismaClientValidationError } from '@prisma/client/runtime/client';
 import { JsonWebTokenError, NotBeforeError, TokenExpiredError } from 'jsonwebtoken';
 import { ZodError } from 'zod';
-
 import { Message } from '~/common/types/response';
-
 import { HttpException } from './error';
 
 type ErrorConstructor<T extends Error = Error> = new (...args: any[]) => T;
@@ -16,9 +15,9 @@ type ExceptionHandler<T = any> = (e: T) => {
 
 export const handlers = new Map<ErrorConstructor, ExceptionHandler>([
   [
-    DrizzleQueryError,
-    (e: DrizzleQueryError) => {
-      console.log('DrizzleQueryError: ', e.message);
+    PrismaClientValidationError,
+    (e: PrismaClientValidationError) => {
+      console.log('PrismaClientValidationError: ', e.message);
       return {
         status: 422,
         message: Message.DATABASE_QUERY_FAILED,
@@ -70,14 +69,13 @@ export const handlers = new Map<ErrorConstructor, ExceptionHandler>([
       };
     },
   ],
-
   [
-    DrizzleError,
-    (e: DrizzleError) => {
-      console.log('DrizzleError: ', e.message);
+    PrismaClientRustPanicError,
+    (e: PrismaClientRustPanicError) => {
+      console.log('PrismaClientRustPanicError: ', e.message);
       return {
         status: 422,
-        message: Message.ENTITY_NOT_FOUND,
+        message: Message.DATABASE_QUERY_FAILED,
         error: e.message,
       };
     },

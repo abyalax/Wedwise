@@ -42,6 +42,4 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# This is for my Playgorund with query drizzle
-main.ts
 /generated/prisma

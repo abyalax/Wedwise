@@ -8,6 +8,9 @@ CREATE TYPE "OrderStatus" AS ENUM ('Draft', 'In Progress', 'Waiting Payment', 'P
 CREATE TYPE "PaymentStatus" AS ENUM ('Pending', 'Success', 'Failed', 'Expired');
 
 -- CreateEnum
+CREATE TYPE "RSVPStatus" AS ENUM ('Confirmed', 'Attended', 'Represented', 'Declined', 'Pending', 'Not Available');
+
+-- CreateEnum
 CREATE TYPE "PaymentProvider" AS ENUM ('MIDTRANS', 'XENDIT', 'SHOPEE');
 
 -- CreateTable
@@ -61,6 +64,7 @@ CREATE TABLE "agents" (
     "systemPrompt" TEXT NOT NULL,
     "context" TEXT NOT NULL,
     "provider" TEXT NOT NULL,
+    "model" TEXT NOT NULL,
     "apiKey" TEXT NOT NULL,
 
     CONSTRAINT "agents_pkey" PRIMARY KEY ("id")
@@ -84,7 +88,7 @@ CREATE TABLE "features" (
     "code" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT,
-    "basePrice" INTEGER NOT NULL,
+    "price" TEXT NOT NULL,
     "status" "StatusActivation" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -99,7 +103,7 @@ CREATE TABLE "packages" (
     "code" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT,
-    "price" INTEGER NOT NULL,
+    "price" TEXT NOT NULL,
     "status" "StatusActivation" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -122,7 +126,10 @@ CREATE TABLE "guests" (
     "name" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
     "participant" INTEGER NOT NULL DEFAULT 1,
-    "rsvpAt" TIMESTAMP(3),
+    "email" TEXT,
+    "reason" TEXT,
+    "notes" TEXT,
+    "rsvpStatus" "RSVPStatus" NOT NULL,
 
     CONSTRAINT "guests_pkey" PRIMARY KEY ("id")
 );
@@ -143,6 +150,10 @@ CREATE TABLE "invitations" (
     "id" SERIAL NOT NULL,
     "orderId" INTEGER NOT NULL,
     "aiContext" TEXT NOT NULL,
+    "groomName" TEXT NOT NULL,
+    "brideName" TEXT NOT NULL,
+    "themeCode" TEXT NOT NULL,
+    "contents" JSONB NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -155,6 +166,7 @@ CREATE TABLE "themes" (
     "slug" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "image" TEXT NOT NULL,
+    "code" TEXT NOT NULL,
     "categoryId" INTEGER NOT NULL,
     "status" "StatusActivation" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -177,7 +189,7 @@ CREATE TABLE "payments" (
     "orderId" INTEGER NOT NULL,
     "provider" "PaymentProvider" NOT NULL,
     "method" TEXT NOT NULL,
-    "amount" INTEGER NOT NULL,
+    "amount" TEXT NOT NULL,
     "status" "PaymentStatus" NOT NULL,
     "payload" JSONB,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -190,7 +202,7 @@ CREATE TABLE "orders" (
     "id" SERIAL NOT NULL,
     "customerId" INTEGER,
     "status" "OrderStatus" NOT NULL,
-    "totalPrice" INTEGER NOT NULL,
+    "totalPrice" TEXT NOT NULL,
     "themeSnapshot" JSONB NOT NULL,
     "packageSnapshot" JSONB NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -206,7 +218,7 @@ CREATE TABLE "order_items" (
     "orderId" INTEGER NOT NULL,
     "featureCode" TEXT NOT NULL,
     "featureName" TEXT NOT NULL,
-    "featurePrice" INTEGER NOT NULL,
+    "featurePrice" TEXT NOT NULL,
 
     CONSTRAINT "order_items_pkey" PRIMARY KEY ("id")
 );
@@ -233,7 +245,7 @@ CREATE UNIQUE INDEX "features_code_key" ON "features"("code");
 CREATE UNIQUE INDEX "packages_code_key" ON "packages"("code");
 
 -- CreateIndex
-CREATE INDEX "guests_phone_idx" ON "guests"("phone");
+CREATE INDEX "guests_phone_name_reason_notes_idx" ON "guests"("phone", "name", "reason", "notes");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "conversations_guestId_key" ON "conversations"("guestId");

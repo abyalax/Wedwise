@@ -1,4 +1,4 @@
-import { Prisma } from '~/generated/prisma/client';
+import { Prisma, StatusActivation } from '~/generated/prisma/client';
 import { prisma } from '../prisma/client';
 
 export async function packageSeeder() {
@@ -12,31 +12,31 @@ export async function packageSeeder() {
       code: 'P-BASIC',
       name: 'Package Basic',
       price: '100000',
-      status: 'Active',
+      status: StatusActivation.ACTIVE,
     },
     {
       code: 'P-PREMIUM',
       name: 'Package Premium',
       price: '175000',
-      status: 'Active',
+      status: StatusActivation.ACTIVE,
     },
     {
       code: 'P-GOLD',
       name: 'Package Gold',
       price: '200000',
-      status: 'Active',
+      status: StatusActivation.ACTIVE,
     },
     {
       code: 'P-PLATINUM',
       name: 'Package Platinum',
       price: '275000',
-      status: 'Active',
+      status: StatusActivation.ACTIVE,
     },
     {
       code: 'P-DIAMOND',
       name: 'Package Diamond',
       price: '350000',
-      status: 'Active',
+      status: StatusActivation.ACTIVE,
     },
   ];
 

@@ -1,3 +1,4 @@
+import { config } from 'dotenv';
 import {
   agentSeeder,
   conversationSeeder,
@@ -11,6 +12,8 @@ import {
   themeSeeder,
   userSeeder,
 } from './seeds';
+
+config();
 
 async function main() {
   console.log('⚡ Seeding deterministic data...');

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
-import type { Permission } from '~/types/entities/permission.types';
 import { env } from './common/const/credential';
+import { Permission } from './generated/prisma/browser';
 import { routePermissions } from './lib/routes/permissions';
 import { matchPermission } from './lib/utils';
 

@@ -1,39 +1,48 @@
 import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import { toast } from 'react-toastify';
+import { metaRequestSchema } from '~/common/types/meta';
+import { useSearch } from '~/components/hooks/use-search';
 import { Badge } from '~/components/ui/badge';
 import { Button } from '~/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '~/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table';
-import { Guest, RsvpStatus } from '../_types';
+import { RSVPStatus } from '~/generated/prisma/enums';
+import { useGetGuests } from '../_hooks/use-get-guests';
 
-interface GuestTableProps {
-  guests: Guest[];
-  onEdit?: (guest: Guest) => void;
-  onDelete?: (guest: Guest) => void;
-}
-
-const statusConfig: Record<RsvpStatus, { label: string; className: string }> = {
-  confirmed: {
+const statusConfig: Record<RSVPStatus, { label: string; className: string }> = {
+  CONFIRMED: {
+    label: 'Hanya Konfirmasi',
+    className: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+  },
+  ATTENDED: {
     label: 'Hadir',
     className: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
   },
-  pending: {
+  PENDING: {
     label: 'Menunggu',
     className: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
   },
-  declined: {
+  NOTAVAILABLE: {
     label: 'Tidak Hadir',
     className: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
   },
+  DECLINED: {
+    label: 'Menolak Hadir',
+    className: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
+  },
+  REPRESENTED: {
+    label: 'Diwakilkan',
+    className: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+  },
 };
 
-export function GuestTable({ guests, onEdit, onDelete }: GuestTableProps) {
-  if (guests.length === 0) {
-    return (
-      <div className="py-12 text-center">
-        <p className="text-muted-foreground">Belum ada tamu yang ditambahkan</p>
-      </div>
-    );
-  }
+export function GuestTable() {
+  const { customerId } = useParams<{ customerId: string }>();
+  const search = useSearch(metaRequestSchema);
+  const { data } = useGetGuests(customerId, search);
+
+  const guests = data?.items ?? [];
 
   return (
     <div className="rounded-md border">
@@ -49,7 +58,7 @@ export function GuestTable({ guests, onEdit, onDelete }: GuestTableProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {guests.map((guest) => {
+          {guests?.map((guest) => {
             const status = statusConfig[guest.rsvpStatus];
             return (
               <TableRow key={guest.id}>
@@ -64,7 +73,7 @@ export function GuestTable({ guests, onEdit, onDelete }: GuestTableProps) {
                 <TableCell>
                   <Badge className={status.className}>{status.label}</Badge>
                 </TableCell>
-                <TableCell className="hidden md:table-cell">{guest.rsvpStatus === 'confirmed' ? guest.numberOfGuests : '-'}</TableCell>
+                <TableCell className="hidden md:table-cell">{guest.rsvpStatus === 'ATTENDED' ? guest.participant : '-'}</TableCell>
                 <TableCell className="hidden lg:table-cell max-w-[200px] truncate">{guest.notes || '-'}</TableCell>
                 <TableCell>
                   <DropdownMenu>
@@ -74,11 +83,11 @@ export function GuestTable({ guests, onEdit, onDelete }: GuestTableProps) {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => onEdit?.(guest)}>
+                      <DropdownMenuItem onClick={() => toast.info('Soon')}>
                         <Pencil className="mr-2 h-4 w-4" />
                         Edit
                       </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => onDelete?.(guest)} className="text-destructive focus:text-destructive">
+                      <DropdownMenuItem onClick={() => toast.info('Soon')} className="text-destructive focus:text-destructive">
                         <Trash2 className="mr-2 h-4 w-4" />
                         Hapus
                       </DropdownMenuItem>

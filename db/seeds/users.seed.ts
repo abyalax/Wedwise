@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import { prisma } from '~/db/prisma/client';
+import { StatusActivation } from '~/generated/prisma/enums';
 
 export async function userSeeder() {
   // --- RESET DATA ---
@@ -116,7 +117,7 @@ export async function userSeeder() {
   await prisma.customer.create({
     data: {
       userId: userIds['customer@gmail.com'],
-      status: 'Active',
+      status: StatusActivation.ACTIVE,
       note: 'Customer Pertama',
     },
   });

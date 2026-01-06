@@ -5,7 +5,7 @@ import { useCallback, useMemo } from 'react';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import { Checkbox } from '~/components/ui/checkbox';
-import type { Guest } from '~/db/schema.d';
+import { Guest } from '~/generated/prisma/browser';
 import { useDeleteGuest } from './use-delete-guest';
 
 const columnHelper = createColumnHelper<Guest>();
@@ -54,15 +54,15 @@ export const useColumns = ({ defaultVisible }: Params) => {
         id: 'phone',
         header: 'Phone',
       }),
-      columnHelper.accessor('status', {
+      columnHelper.accessor('rsvpStatus', {
         id: 'status',
-        header: 'Status',
+        header: 'Status RSVP',
       }),
       columnHelper.accessor('participant', {
         id: 'participant',
         header: 'Participant',
       }),
-      columnHelper.accessor('note', {
+      columnHelper.accessor('notes', {
         id: 'note',
         header: 'Note',
       }),

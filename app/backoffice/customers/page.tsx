@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { PERMISSIONS } from '~/common/const/permission';
 import { MetaRequest } from '~/common/types/meta';
 import { PageScreen } from '~/components/layouts/page';
-import type { Customer } from '~/db/schema.d';
+import { Customer } from '~/generated/prisma/browser';
 import { getQueryClient } from '~/lib/query/client';
 import { Component } from './_components';
 import { queryGetCustomers } from './_hooks/use-get-customers';

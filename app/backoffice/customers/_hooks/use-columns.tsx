@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useMemo } from 'react';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 import { Checkbox } from '~/components/ui/checkbox';
-import type { Customer } from '~/db/schema.d';
+import { Customer } from '~/generated/prisma/browser';
 import { useDeleteCustomer } from './use-delete-customer';
 
 const columnHelper = createColumnHelper<Customer>();
@@ -42,10 +42,6 @@ export const useColumns = ({ defaultVisible }: Params) => {
       columnHelper.accessor('note', {
         id: 'note',
         header: 'Note',
-      }),
-      columnHelper.accessor('theme', {
-        id: 'theme',
-        header: 'Theme',
       }),
       columnHelper.display({
         id: 'action',

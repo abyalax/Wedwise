@@ -6,13 +6,13 @@ import { toast } from 'react-toastify';
 import { QUERY_KEY } from '~/common/const/querykey';
 import { TResponse } from '~/common/types/response';
 import { createCustomer } from '~/data/customers/customer.api';
-import type { CreateUser } from '~/db/schema.d';
+import { FormDataCustomer } from '../_components/form/schema';
 
 export const useCreateCustomer = () => {
   const { back } = useRouter();
   return useMutation({
     mutationKey: [QUERY_KEY.CUSTOMER.CREATE],
-    mutationFn: async (payload: CreateUser) => await createCustomer(payload),
+    mutationFn: async (payload: FormDataCustomer) => await createCustomer(payload),
     meta: { invalidateQueries: [QUERY_KEY.CUSTOMER.GETS] },
     onSuccess: () => {
       toast.success('Successfully create customer');

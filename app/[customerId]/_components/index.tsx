@@ -2,6 +2,9 @@
 
 import { ArrowRight, ExternalLink, Users } from 'lucide-react';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { metaRequestSchema } from '~/common/types/meta';
+import { useSearch } from '~/components/hooks/use-search';
 import { Button } from '~/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
 import { Skeleton } from '~/components/ui/skeleton';
@@ -11,10 +14,12 @@ import { GuestStatsCard } from './guest-stats-card';
 import { OrderSummaryCard } from './order-summary-card';
 
 export default function DashboardPage() {
-  const customerId = '1'; // In real app, get from auth
-
+  const search = useSearch(metaRequestSchema);
+  const { customerId } = useParams<{ customerId: string }>();
   const { data: order, isLoading: orderLoading } = useGetOrder();
-  const { data: guests = [], isLoading: guestsLoading } = useGetGuests();
+  const { data, isLoading: guestsLoading } = useGetGuests(customerId, search);
+
+  const guests = data?.items ?? [];
 
   return (
     <div className="space-y-6">

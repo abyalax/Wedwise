@@ -1,4 +1,4 @@
-import { Prisma } from '~/generated/prisma/client';
+import { PaymentStatus, Prisma } from '~/generated/prisma/client';
 import { prisma } from '../prisma/client';
 
 export async function paymentSeeder() {
@@ -13,7 +13,7 @@ export async function paymentSeeder() {
       provider: 'SHOPEE',
       method: 'Credit Card',
       amount: '100.00',
-      status: 'Pending',
+      status: PaymentStatus.PENDING,
       payload: JSON.stringify({
         transaction_id: 'bca-123456',
         order_id: 'ORDER-2024-0001',

@@ -2,55 +2,23 @@ import { NextResponse } from 'next/server';
 
 import { TResponse } from '~/common/types/response';
 import { prisma } from '~/db/prisma/client';
-import { Customer, customerUpdateSchema } from '~/db/schema';
-import { NotFoundException } from '~/lib/handler/error';
+import { Customer } from '~/generated/prisma/browser';
 import { safeHandler } from '~/lib/handler/safe-handler';
 
-export const GET = safeHandler<{ customerId: string }>(async (_, { params }): Promise<NextResponse<TResponse<Customer>>> => {
+export const GET = safeHandler<{ customerId: string }>(async (_, { params }): Promise<NextResponse<TResponse>> => {
   const { customerId } = await params;
-  const data = await prisma.customer.findUnique({
-    where: { id: Number(customerId) },
-    include: {
-      user: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          phone: true,
-        },
-      },
-    },
-  });
-
-  if (!data) throw new NotFoundException('Customer not found');
-
   return NextResponse.json({
-    data,
+    message: "Does'nt implemented yet",
+    data: { customerId },
   });
 });
 
 export const PUT = safeHandler<{ customerId: string }>(async (req, { params }): Promise<NextResponse<TResponse<Customer>>> => {
-  const { customerId } = await params;
-  const body = await req.json();
-  const parsed = customerUpdateSchema.parse(body);
-  const updated = await prisma.customer.update({
-    where: { id: Number(customerId) },
-    data: parsed,
-    include: {
-      user: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          phone: true,
-        },
-      },
-    },
-  });
-  if (!updated) throw new NotFoundException('Customer not found');
+  // const { customerId } = await params;
+  // const body = await req.json();
+  // const parsed = customerUpdateSchema.parse(body);
   return NextResponse.json({
-    message: 'Client updated successfully',
-    data: updated,
+    message: "Does'nt implemented yet",
   });
 });
 

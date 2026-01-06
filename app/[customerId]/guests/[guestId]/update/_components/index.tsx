@@ -15,12 +15,7 @@ export const Component: FC = () => {
   const { customerId, guestId } = useParams<Params>();
   const { mutate, isPending } = useUpdateGuest(customerId, guestId);
   const { data } = useGetGuest(customerId, guestId);
-  const handleSubmit = (data: FormDataGuest) => {
-    mutate({
-      ...data,
-      participant: data.participant ? Number(data.participant) : 1,
-    });
-  };
+  const handleSubmit = (data: FormDataGuest) => mutate(data);
 
   const initialValues =
     data &&
@@ -28,8 +23,8 @@ export const Component: FC = () => {
       name: data.name,
       phone: data.phone,
       participant: data.participant.toString(),
-      note: data.note ?? '',
-      status: data.status,
+      note: data.notes ?? '',
+      rsvpStatus: data.rsvpStatus,
     } as FormDataGuest);
 
   return (

@@ -16,7 +16,7 @@ export const CustomersTable = () => {
   });
 
   const { columns, columnIds, initialColumnVisibility } = useColumns({
-    defaultVisible: ['select', 'theme', 'note', 'action'],
+    defaultVisible: ['select', 'note', 'action'],
   });
   return (
     <Table
@@ -26,7 +26,7 @@ export const CustomersTable = () => {
       onClickRow={(data) => console.log(data.original)}
       enableFeature={{
         search: {
-          fieldSearchable: 'theme',
+          fieldSearchable: 'note',
         },
         columnVisibilitySelector: {
           initialColumnVisibility,

@@ -76,7 +76,7 @@ model Customer {
   note String?
 
   user   User             @relation(fields: [userId], references: [id])
-  status StatusActivation @default(Active)
+  status StatusActivation @default(ACTIVE)
   orders Order[]
 
   createdAt DateTime @default(now())
@@ -136,14 +136,16 @@ model Guest {
 
   name        String
   phone       String
-  participant Int       @default(1)
-  rsvpAt      DateTime?
+  participant Int     @default(1)
+  email       String?
+  reason      String?
+  notes       String?
 
+  rsvpStatus   RSVPStatus
   conversation Conversation?
+  invitation   Invitation    @relation(fields: [invitationId], references: [id])
 
-  invitation Invitation @relation(fields: [invitationId], references: [id])
-
-  @@index([phone])
+  @@index([phone, name, reason, notes])
   @@map("guests")
 }
 
@@ -265,23 +267,32 @@ model OrderItem {
 }
 
 enum StatusActivation {
-  Active
-  InActive @map("In Active")
+  ACTIVE
+  INACTIVE
 }
 
 enum OrderStatus {
-  Draft
-  InProgress     @map("In Progress")
-  WaitingPayment @map("Waiting Payment")
-  Paid           @map("Paid")
-  Cancelled      @map("Cancelled")
+  DRAFT
+  INPROGRESS
+  WAITINGPAYMENT
+  PAID
+  CANCELLED
 }
 
 enum PaymentStatus {
-  Pending
-  Success
-  Failed
-  Expired
+  PENDING
+  SUCCESS
+  FAILED
+  EXPIRED
+}
+
+enum RSVPStatus {
+  CONFIRMED
+  ATTENDED
+  REPRESENTED
+  DECLINED
+  PENDING
+  NOTAVAILABLE
 }
 
 enum PaymentProvider {

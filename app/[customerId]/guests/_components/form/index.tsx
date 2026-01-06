@@ -9,7 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '~/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
 import { Textarea } from '~/components/ui/textarea';
-import { GuestStatus } from '~/generated/prisma/enums';
+import { RSVPStatus } from '~/generated/prisma/enums';
 import { FormDataGuest, guestSchema } from './schema';
 
 interface FormProps {
@@ -27,7 +27,7 @@ export const FormCustomer: FC<FormProps> = ({ onSubmit, initialValues, isLoading
       phone: '',
       participant: '1',
       note: '',
-      status: GuestStatus.Invited,
+      rsvpStatus: RSVPStatus.PENDING,
     },
   });
 
@@ -83,7 +83,7 @@ export const FormCustomer: FC<FormProps> = ({ onSubmit, initialValues, isLoading
 
           <FormField
             control={form.control}
-            name="status"
+            name="rsvpStatus"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Status</FormLabel>
@@ -93,11 +93,10 @@ export const FormCustomer: FC<FormProps> = ({ onSubmit, initialValues, isLoading
                       <SelectValue placeholder="Status Guest Invitation" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Invited">Invited</SelectItem>
-                      <SelectItem value="Attending">Attending</SelectItem>
-                      <SelectItem value="NotAttending">NotAttending</SelectItem>
-                      <SelectItem value="Declined">Declined</SelectItem>
-                      <SelectItem value="Maybe">Maybe</SelectItem>
+                      <SelectItem value={RSVPStatus.ATTENDED}>Attending</SelectItem>
+                      <SelectItem value={RSVPStatus.NOTAVAILABLE}>Does'nt Available</SelectItem>
+                      <SelectItem value={RSVPStatus.DECLINED}>Declined</SelectItem>
+                      <SelectItem value={RSVPStatus.REPRESENTED}>Represented other people</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormControl>

@@ -2,6 +2,6 @@ import { prisma } from './prisma/client';
 
 await prisma.$executeRawUnsafe(`
     TRUNCATE TABLE
-      "themes"
+      "guests"
     RESTART IDENTITY CASCADE;
   `);

@@ -1,34 +1,27 @@
 import { Plus, UserPlus } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
 import { Button } from '~/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '~/components/ui/dialog';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/components/ui/select';
 import { Textarea } from '~/components/ui/textarea';
-import { Guest, RsvpStatus } from '../guests/_types';
+import { RSVPStatus } from '~/generated/prisma/enums';
 
-interface AddGuestDialogProps {
-  onAdd?: (guest: Omit<Guest, 'id' | 'createdAt'>) => void;
-}
-
-export function AddGuestDialog({ onAdd }: AddGuestDialogProps) {
+export function AddGuestDialog() {
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     email: '',
-    rsvpStatus: 'pending' as RsvpStatus,
+    rsvpStatus: '',
     numberOfGuests: 1,
     notes: '',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onAdd?.({
-      ...formData,
-      numberOfGuests: formData.rsvpStatus === 'confirmed' ? formData.numberOfGuests : 0,
-    });
     setFormData({
       name: '',
       phone: '',
@@ -37,6 +30,7 @@ export function AddGuestDialog({ onAdd }: AddGuestDialogProps) {
       numberOfGuests: 1,
       notes: '',
     });
+    toast.success("Success, but does'nt real");
     setOpen(false);
   };
 
@@ -94,7 +88,7 @@ export function AddGuestDialog({ onAdd }: AddGuestDialogProps) {
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="rsvpStatus">Status RSVP</Label>
-              <Select value={formData.rsvpStatus} onValueChange={(value: RsvpStatus) => setFormData({ ...formData, rsvpStatus: value })}>
+              <Select value={formData.rsvpStatus} onValueChange={(value: RSVPStatus) => setFormData({ ...formData, rsvpStatus: value })}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -114,7 +108,7 @@ export function AddGuestDialog({ onAdd }: AddGuestDialogProps) {
                   min={1}
                   max={10}
                   value={formData.numberOfGuests}
-                  onChange={(e) => setFormData({ ...formData, numberOfGuests: parseInt(e.target.value) || 1 })}
+                  onChange={(e) => setFormData({ ...formData, numberOfGuests: parseInt(e.target.value, 10) || 1 })}
                 />
               </div>
             )}

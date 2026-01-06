@@ -1,9 +1,9 @@
 import { MetaRequest } from '~/common/types/meta';
 import { PageScreen } from '~/components/layouts/page';
-import type { Guest } from '~/db/schema.d';
+import { Guest } from '~/generated/prisma/browser';
 import { getQueryClient } from '~/lib/query/client';
 import { Component } from './_components';
-import { queryGetGuests } from './_hooks/use-get-guests-prod';
+import { queryGetGuests } from './_hooks/use-get-guests';
 
 const breadcrumbItems = (customerId: string) => [
   {
