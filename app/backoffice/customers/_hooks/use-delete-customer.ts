@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 import { QUERY_KEY } from '~/common/const/querykey';
 import { TResponse } from '~/common/types/response';
-import { deleteCustomer } from '~/data/customers/customer.api';
+import { deleteCustomer } from '~/modules/customers/customer.api';
 
 export const useDeleteCustomer = () => {
   return useMutation({

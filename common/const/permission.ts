@@ -18,8 +18,6 @@ export const PERMISSIONS = {
   },
 
   CUSTOMER: {
-    READ_PROFILE: 'customer:read_profile',
-
     CREATE_INVITATION: 'customer:create_invitation',
     READ_INVITATION: 'customer:read_invitation',
     UPDATE_INVITATION: 'customer:update_invitation',

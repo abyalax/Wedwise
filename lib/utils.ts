@@ -27,6 +27,12 @@ export const reorder = (list: string[], startIndex: number, endIndex: number): s
 
 export type ExtractString<T> = T extends object ? { [K in keyof T]: ExtractString<T[K]> }[keyof T] : T;
 
+export type NullToUndefined<T> = {
+  [K in keyof T as null extends T[K] ? never : K]: T[K];
+} & {
+  [K in keyof T as null extends T[K] ? K : never]?: Exclude<T[K], null>;
+};
+
 export function matchPermission(userPermissions: string[], required: string): boolean {
   return userPermissions.some((p) => {
     if (p === required) return true; // exact match

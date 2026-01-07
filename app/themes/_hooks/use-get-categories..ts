@@ -1,4 +1,4 @@
-import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 
 import { QUERY_KEY } from '~/common/const/querykey';
 import { ThemeCategory } from '../_types';
@@ -20,5 +20,5 @@ export const queryGetCategoryThemes = () =>
   });
 
 export const useGetCategoryThemes = () => {
-  return useSuspenseQuery(queryGetCategoryThemes());
+  return useQuery(queryGetCategoryThemes());
 };

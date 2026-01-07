@@ -5,7 +5,7 @@ import { Chart, TooltipItem } from 'chart.js';
 import Lottie from 'lottie-react';
 import { ComponentType, useEffect, useMemo, useRef } from 'react';
 import { NotDataFoundV2 } from '~/assets';
-import { FallBack } from '../fragments/fallback';
+import { Loading } from '../fragments/fallback/loading';
 import { Flex } from '../layouts/flex';
 
 export interface BarChartProps<T extends Record<string, unknown>> {
@@ -162,7 +162,7 @@ export function BarChart<T extends Record<string, unknown>>({ data, loading, opt
 
   // Render loading state
   if (loading) {
-    return LoadingComponent ? <LoadingComponent /> : <FallBack />;
+    return LoadingComponent ? <LoadingComponent /> : <Loading />;
   }
 
   // Render no data state

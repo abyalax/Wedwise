@@ -5,14 +5,14 @@ import { toast } from 'react-toastify';
 
 import { QUERY_KEY } from '~/common/const/querykey';
 import { TResponse } from '~/common/types/response';
-import { createGuest } from '~/data/guests/guest.api';
-import { FormDataGuest } from '../_components/form/schema';
+import { createGuest } from '~/modules/guests/guest.api';
+import { FormDataGuest } from '../_components/form/guest-schema';
 
-export const useCreateGuest = (customerId: string) => {
+export const useCreateGuest = (customerId: string, invitationId: string) => {
   const { back } = useRouter();
   return useMutation({
     mutationKey: [QUERY_KEY.GUEST.CREATE],
-    mutationFn: async (payload: FormDataGuest) => await createGuest(customerId, payload),
+    mutationFn: async (payload: FormDataGuest) => await createGuest(customerId, invitationId, payload),
     meta: { invalidateQueries: [QUERY_KEY.GUEST.GETS] },
     onSuccess: () => {
       toast.success('Successfully create new guest');

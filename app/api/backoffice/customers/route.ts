@@ -47,9 +47,9 @@ export const GET = safeHandler(async (req): Promise<NextResponse<TResponse>> => 
   // return NextResponse.json({
   //   data,
   // });
-  return NextResponse.json({ message: "Does'nt implemeneted yet", page, perPage, where });
+  return NextResponse.json({ message: "Does'nt implemeneted yet", data: undefined });
 });
 
 export const POST = safeHandler(async (_req): Promise<NextResponse<TResponse>> => {
-  return NextResponse.json({ message: "Does'nt implemeneted yet" });
+  return NextResponse.json({ message: "Does'nt implemeneted yet", data: undefined });
 });

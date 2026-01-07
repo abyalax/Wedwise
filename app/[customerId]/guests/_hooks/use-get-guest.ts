@@ -1,15 +1,12 @@
-import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
-
+import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEY } from '~/common/const/querykey';
-import { getGuest } from '~/data/guests/guest.api';
-
-export const queryGetGuest = (customerId: string, guestId: string) =>
-  queryOptions({
-    queryKey: [QUERY_KEY.GUEST.GET_BY_ID, customerId, guestId],
-    queryFn: () => getGuest(customerId, guestId),
-    select: (data) => data.data.data,
-  });
+import { getGuest } from '~/modules/guests/guest.api';
 
 export const useGetGuest = (customerId: string, guestId: string) => {
-  return useSuspenseQuery(queryGetGuest(customerId, guestId));
+  return useQuery({
+    queryKey: [QUERY_KEY.GUEST.GET_BY_ID, customerId, guestId],
+    queryFn: () => getGuest(customerId, guestId),
+    select: (s) => s.data.data,
+    retry: false,
+  });
 };

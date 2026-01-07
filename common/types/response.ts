@@ -11,6 +11,7 @@ export const Message = {
   REFRESH_TOKEN_EXPIRED: 'Refresh Token Expired',
 
   DATABASE_ERROR: 'Database Error',
+  DATABASE_DOWN: 'Server Database Down',
   DATABASE_QUERY_FAILED: 'Database Query Failed',
 
   ENTITY_NOT_FOUND: 'Entity Not Found',
@@ -20,9 +21,9 @@ export const Message = {
 } as const;
 
 export type TResponse<T = unknown> = {
-  message?: string;
+  message: string;
   error?: unknown[];
-  data?: T;
+  data: T;
 };
 
 export type TListPagination<T> = {

@@ -72,7 +72,7 @@ export const useColumns = ({ defaultVisible }: Params) => {
     [deleteClient],
   );
 
-  const columnIds = useMemo(() => columns.map((col) => col.id), [columns]);
+  const columnIds = useMemo(() => columns.map((col) => col.id ?? ''), [columns]);
 
   const initialColumnVisibility = useMemo(() => {
     return columnIds.reduce(

@@ -5,7 +5,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import Lottie from 'lottie-react';
 import { ComponentType, useEffect, useMemo, useRef } from 'react';
 import { NotDataFoundV2 } from '~/assets';
-import { FallBack } from '../fragments/fallback';
+import { Loading } from '../fragments/fallback/loading';
 import { Flex } from '../layouts/flex';
 
 Chart.register(ChartDataLabels);
@@ -121,7 +121,7 @@ export function PieChart<T extends Record<string, string>>({
     return () => chartRef.current?.destroy();
   }, [labels, values, dataset, data, chartOptions]);
 
-  if (loading) return <>{LoadingComponent ?? <FallBack />}</>;
+  if (loading) return <>{LoadingComponent ?? <Loading />}</>;
 
   if (!data || data.length === 0)
     return (

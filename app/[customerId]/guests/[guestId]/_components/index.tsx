@@ -1,28 +1,33 @@
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { FC } from 'react';
+import { QueryState } from '~/components/fragments/fallback/query-state';
 import { Flex } from '~/components/layouts/flex';
-import { Button } from '~/components/ui/button';
 import { H1 } from '~/components/ui/typography';
+import { FormDataGuest } from '../../_components/form/guest-schema';
+import { GuestDialog } from '../../_components/guest-dialog';
 import { useGetGuest } from '../../_hooks/use-get-guest';
+import { useUpdateGuest } from '../../_hooks/use-update-guest';
 
 type Params = Awaited<PageProps<'/[customerId]/guests/[guestId]'>['params']>;
 
 export const Component: FC = () => {
   const { customerId, guestId } = useParams<Params>();
-  const { data } = useGetGuest(customerId, guestId);
-  const { push } = useRouter();
-  const handleUpdate = () => push(`/${customerId}/guests/${guestId}/update`);
+  const { data, isLoading } = useGetGuest(customerId, guestId);
+  const { mutate } = useUpdateGuest(customerId, guestId);
+  const onSubmit = (v: FormDataGuest) => mutate(v);
   return (
     <div>
       <Flex justify="space-between">
         <H1>Detail Customer</H1>
-        <Button onClick={handleUpdate}>Update</Button>
+        <GuestDialog initialValues={data} onSubmit={onSubmit} />
       </Flex>
-      <pre>
-        <code>{JSON.stringify(data, null, 2)}</code>
-      </pre>
+      <QueryState isLoading={isLoading} data={data}>
+        <pre>
+          <code>{JSON.stringify(data, null, 2)}</code>
+        </pre>
+      </QueryState>
     </div>
   );
 };

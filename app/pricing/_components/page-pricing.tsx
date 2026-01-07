@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { Crown } from 'lucide-react';
-import { Suspense } from 'react';
 import { PricingGrid } from './pricing-grid';
 
 export const PagePricing = () => {
@@ -22,17 +21,7 @@ export const PagePricing = () => {
       {/* Pricing Grid */}
       <section className="px-4">
         <div className="mx-auto max-w-5xl">
-          <Suspense
-            fallback={
-              <div className="grid gap-8 md:grid-cols-3">
-                {[...Array(3)].map((_, i) => (
-                  <div key={i} className="h-96 animate-pulse rounded-xl bg-muted" />
-                ))}
-              </div>
-            }
-          >
-            <PricingGrid />
-          </Suspense>
+          <PricingGrid />
         </div>
       </section>
 

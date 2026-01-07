@@ -5,7 +5,7 @@ import Lottie from 'lottie-react';
 import { useTheme } from 'next-themes';
 import { FC, useEffect, useMemo, useRef } from 'react';
 import { NotDataFoundV2 } from '~/assets';
-import { FallBack } from '~/components/fragments/fallback';
+import { Loading } from '~/components/fragments/fallback/loading';
 import { Flex } from '~/components/layouts/flex';
 import { data } from './config';
 
@@ -93,7 +93,7 @@ export const ClusteredBarChart: FC = () => {
     return () => chartRef.current?.destroy();
   }, [isLightMode, names, total_with_discount, total_without_discount]);
 
-  if (loading) return <FallBack />;
+  if (loading) return <Loading />;
 
   if (!data || data.length === 0) {
     return (

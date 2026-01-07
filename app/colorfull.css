@@ -4,7 +4,9 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji"; /* Emoji support */
   line-height: 1.5;
   font-weight: 400;
 
@@ -173,9 +175,16 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
   }
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Override Radix scroll locking for sticky headers */
+  body[data-scroll-locked] {
+    overflow: unset !important;
   }
 }

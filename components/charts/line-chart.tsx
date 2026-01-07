@@ -5,7 +5,7 @@ import Lottie from 'lottie-react';
 import type { ComponentType } from 'react';
 import { useEffect, useMemo, useRef } from 'react';
 import { NotDataFoundV2 } from '~/assets';
-import { FallBack } from '../fragments/fallback';
+import { Loading } from '../fragments/fallback/loading';
 import { Flex } from '../layouts/flex';
 
 export interface LineChartProps<T extends Record<string, unknown>> {
@@ -151,7 +151,7 @@ export function LineChart<T extends Record<string, unknown>>({ data, loading, op
     return () => chartRef.current?.destroy();
   }, [data, labels, processedDatasets, mergedOptions]);
 
-  if (loading) return <FallBack />;
+  if (loading) return <Loading />;
 
   if (!data || data.length === 0) {
     return (

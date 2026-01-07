@@ -10,12 +10,12 @@ interface FeatureGridProps {
 export function FeatureGrid({ selectedCategory }: FeatureGridProps) {
   const { data: features } = useGetFeatures();
 
-  const filteredFeatures = selectedCategory === 'all' ? features : features.filter((feature) => feature.category === selectedCategory);
+  const filteredFeatures = selectedCategory === 'all' ? features : features?.filter((feature) => feature.category === selectedCategory);
 
   return (
     <motion.div layout className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       <AnimatePresence mode="popLayout">
-        {filteredFeatures.map((feature, index) => (
+        {filteredFeatures?.map((feature, index) => (
           <motion.div
             key={feature.id}
             layout

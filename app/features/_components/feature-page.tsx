@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Sparkles } from 'lucide-react';
-import { Fragment, Suspense, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { FeatureCategory } from '../_types';
 import { FeatureFilters } from './feature-filters';
 import { FeatureGrid } from './feature-grid';
@@ -24,24 +24,12 @@ export function FeaturesPage() {
       </section>
       <section className="border-b bg-background/80 py-6 backdrop-blur-sm sticky top-0 z-10">
         <div className="mx-auto max-w-7xl">
-          <Suspense fallback={<div className="h-10" />}>
-            <FeatureFilters selectedCategory={selectedCategory} onCategoryChange={setSelectedCategory} />
-          </Suspense>
+          <FeatureFilters selectedCategory={selectedCategory} onCategoryChange={setSelectedCategory} />
         </div>
       </section>
       <section className="py-16">
         <div className="mx-auto max-w-7xl">
-          <Suspense
-            fallback={
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {[...Array(8)].map((_, i) => (
-                  <div key={i} className="h-48 animate-pulse rounded-xl bg-muted" />
-                ))}
-              </div>
-            }
-          >
-            <FeatureGrid selectedCategory={selectedCategory} />
-          </Suspense>
+          <FeatureGrid selectedCategory={selectedCategory} />
         </div>
       </section>
     </Fragment>

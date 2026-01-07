@@ -2,17 +2,12 @@ import { dehydrate } from '@tanstack/react-query';
 import './colorfull.css';
 
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import { PropsWithChildren } from 'react';
 
 import { QueryKey } from '~/common/const/querykey';
 import { Providers } from '~/components/provider/application';
+import { Permission, Role } from '~/generated/prisma/browser';
 import { getQueryClient } from '~/lib/query/client';
-import { Permission, Role } from '~/modules/users/users.type';
-
-export const font = Inter({
-  subsets: ['latin'],
-});
 
 export const metadata: Metadata = {
   title: 'Next Application',
@@ -70,7 +65,7 @@ export default function RootLayout({ children }: Readonly<PropsWithChildren>) {
   const queryClient = getQueryClient();
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${font.className} antialiased`}>
+      <body className={`antialiased`}>
         <Providers dehydratedState={dehydrate(queryClient)}>{children}</Providers>
       </body>
     </html>

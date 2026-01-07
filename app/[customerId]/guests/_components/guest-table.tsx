@@ -1,104 +1,52 @@
-import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
+'use client';
+
+import { MailCheck, Trash2 } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
-import { metaRequestSchema } from '~/common/types/meta';
+import z from 'zod';
+import { metaRequestSchema, sortingSchema } from '~/common/types/meta';
+import { QueryState } from '~/components/fragments/fallback/query-state';
+import { Table } from '~/components/fragments/table';
 import { useSearch } from '~/components/hooks/use-search';
-import { Badge } from '~/components/ui/badge';
-import { Button } from '~/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '~/components/ui/dropdown-menu';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table';
-import { RSVPStatus } from '~/generated/prisma/enums';
+import { TGuestColumn, useColumns } from '../_hooks/use-columns';
 import { useGetGuests } from '../_hooks/use-get-guests';
+import { filters } from './filters';
 
-const statusConfig: Record<RSVPStatus, { label: string; className: string }> = {
-  CONFIRMED: {
-    label: 'Hanya Konfirmasi',
-    className: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-  },
-  ATTENDED: {
-    label: 'Hadir',
-    className: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
-  },
-  PENDING: {
-    label: 'Menunggu',
-    className: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-  },
-  NOTAVAILABLE: {
-    label: 'Tidak Hadir',
-    className: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-  },
-  DECLINED: {
-    label: 'Menolak Hadir',
-    className: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200',
-  },
-  REPRESENTED: {
-    label: 'Diwakilkan',
-    className: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-  },
-};
-
-export function GuestTable() {
+export const GuestsTable = () => {
   const { customerId } = useParams<{ customerId: string }>();
-  const search = useSearch(metaRequestSchema);
-  const { data } = useGetGuests(customerId, search);
-
-  const guests = data?.items ?? [];
+  const sortSchema = sortingSchema(['email', 'name', 'participant', 'rsvpStatus', 'reason', 'notes'] as TGuestColumn[]);
+  const searchSchema = z.object({
+    ...metaRequestSchema.shape,
+    ...sortSchema.shape,
+  });
+  const search = useSearch(searchSchema);
+  const { data, isLoading } = useGetGuests(customerId, {
+    ...search,
+    page: Number(search.page ?? 1),
+    per_page: Number(search.per_page ?? 10),
+  });
+  const { columns, columnIds, initialColumnVisibility } = useColumns({
+    defaultVisible: ['select', 'id', 'name', 'phone', 'rsvpStatus', 'participant', 'notes', 'action'],
+  });
 
   return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Nama</TableHead>
-            <TableHead className="hidden sm:table-cell">Kontak</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead className="hidden md:table-cell">Jumlah</TableHead>
-            <TableHead className="hidden lg:table-cell">Catatan</TableHead>
-            <TableHead className="w-[50px]"></TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {guests?.map((guest) => {
-            const status = statusConfig[guest.rsvpStatus];
-            return (
-              <TableRow key={guest.id}>
-                <TableCell className="font-medium">{guest.name}</TableCell>
-                <TableCell className="hidden sm:table-cell">
-                  <div className="text-sm">
-                    {guest.phone && <p>{guest.phone}</p>}
-                    {guest.email && <p className="text-muted-foreground">{guest.email}</p>}
-                    {!guest.phone && !guest.email && <span className="text-muted-foreground">-</span>}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <Badge className={status.className}>{status.label}</Badge>
-                </TableCell>
-                <TableCell className="hidden md:table-cell">{guest.rsvpStatus === 'ATTENDED' ? guest.participant : '-'}</TableCell>
-                <TableCell className="hidden lg:table-cell max-w-[200px] truncate">{guest.notes || '-'}</TableCell>
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => toast.info('Soon')}>
-                        <Pencil className="mr-2 h-4 w-4" />
-                        Edit
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => toast.info('Soon')} className="text-destructive focus:text-destructive">
-                        <Trash2 className="mr-2 h-4 w-4" />
-                        Hapus
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </div>
+    <QueryState data={data} isLoading={isLoading}>
+      <Table
+        data={data}
+        columns={columns}
+        columnIds={columnIds}
+        menufilter={filters()}
+        onClickRow={(data) => console.log(data)}
+        initialColumnVisibility={initialColumnVisibility}
+        engineSide="server_side"
+        pagination={true}
+        bulkActions={[
+          { icon: <MailCheck />, label: 'Send To Email', onClick: () => toast.info('Success gess') },
+          { icon: <Trash2 />, label: 'Remove Data', onClick: () => toast.info('Success gess') },
+          { icon: <MailCheck />, label: 'Send To Email', onClick: () => toast.info('Success gess') },
+          { icon: <Trash2 />, label: 'Remove Data', onClick: () => toast.info('Success gess') },
+        ]}
+      />
+    </QueryState>
   );
-}
+};

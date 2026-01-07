@@ -1,4 +1,4 @@
-import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 import { Feature, FeatureCategory } from '../_types';
 
 const features: Feature[] = [
@@ -83,7 +83,7 @@ export const queryGetFeatures = () =>
   });
 
 export const useGetFeatures = () => {
-  return useSuspenseQuery(queryGetFeatures());
+  return useQuery(queryGetFeatures());
 };
 
 export const queryGetFeatureCategories = () =>
@@ -93,5 +93,5 @@ export const queryGetFeatureCategories = () =>
   });
 
 export const useGetFeatureCategories = () => {
-  return useSuspenseQuery(queryGetFeatureCategories());
+  return useQuery(queryGetFeatureCategories());
 };

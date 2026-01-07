@@ -13,9 +13,11 @@ export const sortingSchema = (fields: string[]) =>
     sort_order: z.enum(['ASC', 'DESC']).optional(),
   });
 
-interface Sorting<E> {
+export type SortOrder = 'ASC' | 'DESC';
+
+export interface Sorting<E> {
   sort_by?: keyof E | string;
-  sort_order?: 'ASC' | 'DESC';
+  sort_order?: SortOrder;
 }
 
 export const globalFilterSchema = z.object({

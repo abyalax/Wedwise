@@ -5,7 +5,7 @@ import Lottie from 'lottie-react';
 import { ReactNode, useEffect, useMemo, useRef } from 'react';
 import { DeepPartial } from 'react-hook-form';
 import { NotDataFoundV2 } from '~/assets';
-import { FallBack } from '../fragments/fallback';
+import { Loading } from '../fragments/fallback/loading';
 import { Flex } from '../layouts/flex';
 
 /** Data point for BubbleChart */
@@ -109,7 +109,7 @@ export function BubbleChart<T extends Record<string, unknown>>({
     return () => chartRef.current?.destroy();
   }, [bubbles, datasetConfig, mergedConfig]);
 
-  if (isLoading) return <>{loadingFallback ?? <FallBack />}</>;
+  if (isLoading) return <>{loadingFallback ?? <Loading />}</>;
 
   // No data state
   if (!data || data.length === 0) {

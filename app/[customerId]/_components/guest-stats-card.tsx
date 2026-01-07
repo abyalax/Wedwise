@@ -1,6 +1,9 @@
 import { Check, Clock, UserCheck, Users, X } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card';
-import { Guest } from '~/generated/prisma/browser';
+import { Guest as PrismaGuest } from '~/generated/prisma/browser';
+import { NullToUndefined } from '~/lib/utils';
+
+type Guest = NullToUndefined<PrismaGuest>;
 
 interface GuestStatsCardProps {
   guests: Guest[];

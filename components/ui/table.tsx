@@ -5,7 +5,7 @@ import { ComponentProps, FC } from 'react';
 import { cn } from '~/lib/utils';
 
 export const Table: FC<ComponentProps<'table'>> = ({ className, ...props }) => (
-  <div data-slot="table-container" className="relative w-full overflow-x-auto">
+  <div data-slot="table-container" className="w-full">
     <table data-slot="table" className={cn('w-full caption-bottom text-sm', className)} {...props} />
   </div>
 );

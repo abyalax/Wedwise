@@ -32,7 +32,7 @@ import { ConfirmLogout } from './confirm-logout';
 export interface MenuItem {
   title: string;
   url: string;
-  icon?: ComponentType<SVGProps<SVGSVGElement>>;
+  icon: ComponentType<SVGProps<SVGSVGElement>>;
   badge?: {
     count: number;
     variant: 'default' | 'destructive' | 'secondary' | 'outline';
@@ -54,7 +54,7 @@ const navigationItems = (customerId: string): MenuGroup[] => [
         title: 'Beranda',
         url: `/${customerId}`,
         icon: Home,
-        permissions: [PERMISSIONS.CUSTOMER.READ_PROFILE],
+        permissions: [PERMISSIONS.CUSTOMER.READ_GUEST, PERMISSIONS.CUSTOMER.READ_INVITATION],
       },
       {
         title: 'Guests',

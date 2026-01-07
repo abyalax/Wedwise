@@ -6,7 +6,7 @@ export function PricingGrid() {
 
   return (
     <div className="grid gap-8 md:grid-cols-3 py-10">
-      {plans.map((plan, index) => (
+      {plans?.map((plan, index) => (
         <PricingCard key={plan.id} plan={plan} index={index} />
       ))}
     </div>

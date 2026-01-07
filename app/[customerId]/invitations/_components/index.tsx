@@ -1,8 +1,7 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
-import { FC, Suspense } from 'react';
-import { FallBack } from '~/components/fragments/fallback';
+import { FC } from 'react';
 import { Flex } from '~/components/layouts/flex';
 import { Button } from '~/components/ui/button';
 import { H1, P } from '~/components/ui/typography';
@@ -21,9 +20,7 @@ export const Component: FC = () => {
         </Flex>
       </div>
 
-      <Suspense fallback={<FallBack />}>
-        <P>Data Invitations</P>
-      </Suspense>
+      <P>Data Invitations</P>
     </div>
   );
 };

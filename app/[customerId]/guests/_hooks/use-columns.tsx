@@ -1,27 +1,29 @@
 import { createColumnHelper } from '@tanstack/react-table';
-import Link from 'next/link';
+import { MoreHorizontal, Pencil, Trash2 } from 'lucide-react';
 import { useParams } from 'next/navigation';
-import { useCallback, useMemo } from 'react';
-import { FaPencilAlt, FaTrash } from 'react-icons/fa';
+import { useMemo } from 'react';
 import { toast } from 'react-toastify';
+import { Badge } from '~/components/ui/badge';
+import { Button } from '~/components/ui/button';
 import { Checkbox } from '~/components/ui/checkbox';
-import { Guest } from '~/generated/prisma/browser';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '~/components/ui/dropdown-menu';
+import { Guest as PrismaGuest } from '~/generated/prisma/browser';
+import { NullToUndefined } from '~/lib/utils';
+import { statusConfig } from '../_utils';
 import { useDeleteGuest } from './use-delete-guest';
 
+type Guest = NullToUndefined<PrismaGuest>;
+
 const columnHelper = createColumnHelper<Guest>();
-export type TUserColumn = keyof Guest | 'select' | 'action';
+export type TGuestColumn = keyof Guest | 'select' | 'action';
 
 type Params = {
-  defaultVisible: TUserColumn[];
+  defaultVisible: TGuestColumn[];
 };
 
 export const useColumns = ({ defaultVisible }: Params) => {
   const { customerId } = useParams<{ customerId: string }>();
   const { mutate: deleteClient } = useDeleteGuest(customerId);
-
-  const handleEditGuest = useCallback((guest: Guest) => {
-    toast.info(`Fitur edit untuk ${guest.name} akan segera tersedia.`);
-  }, []);
 
   const columns = useMemo(
     () => [
@@ -53,60 +55,81 @@ export const useColumns = ({ defaultVisible }: Params) => {
       columnHelper.accessor('phone', {
         id: 'phone',
         header: 'Phone',
+        cell: ({ row }) => {
+          const record = row.original;
+          return (
+            <div className="text-sm">
+              {record.phone && <p>{record.phone}</p>}
+              {record.email && <p className="text-muted-foreground">{record.email}</p>}
+              {!record.phone && !record.email && <span className="text-muted-foreground">-</span>}
+            </div>
+          );
+        },
       }),
       columnHelper.accessor('rsvpStatus', {
-        id: 'status',
+        id: 'rsvpStatus',
         header: 'Status RSVP',
+        cell: ({ row }) => {
+          const status = statusConfig[row.original.rsvpStatus];
+          return <Badge className={status.className}>{status.label}</Badge>;
+        },
       }),
       columnHelper.accessor('participant', {
         id: 'participant',
         header: 'Participant',
+        cell: ({ row }) => (row.original.rsvpStatus === 'ATTENDED' ? row.original.participant : '-'),
       }),
       columnHelper.accessor('notes', {
         id: 'note',
         header: 'Note',
+        cell: ({ row }) => {
+          const record = row.original;
+          const content = record.reason ? record.reason : record.notes;
+          return content ?? '-';
+        },
       }),
       columnHelper.display({
         id: 'action',
         header: 'Action',
         cell: (info) => (
-          <div className="flex items-center gap-2">
-            <Link
-              href={`/${customerId}/guests/${info.row.original.id}/update`}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleEditGuest(info.row.original);
-              }}
-              className="text-gray-700 hover:text-blue-600"
-            >
-              <FaPencilAlt />
-            </Link>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                deleteClient(info.row.original.id.toString());
-              }}
-              className="text-red-600 hover:text-red-800"
-            >
-              <FaTrash />
-            </button>
-          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => toast.info('Soon')}>
+                <Pencil className="mr-2 h-4 w-4" />
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteClient(info.row.original.id.toString());
+                }}
+                className="text-destructive focus:text-destructive"
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Hapus
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         ),
       }),
     ],
-    [deleteClient, customerId, handleEditGuest],
+    [deleteClient],
   );
 
-  const columnIds = useMemo(() => columns.map((col) => col.id), [columns]);
+  const columnIds = useMemo(() => columns.map((col) => col.id ?? ''), [columns]);
 
   const initialColumnVisibility = useMemo(() => {
     return columnIds.reduce(
       (acc, val) => {
-        acc[val as TUserColumn] = defaultVisible.includes(val as TUserColumn);
+        acc[val as TGuestColumn] = defaultVisible.includes(val as TGuestColumn);
         return acc;
       },
-      {} as Record<TUserColumn, boolean>,
+      {} as Record<TGuestColumn, boolean>,
     );
   }, [columnIds, defaultVisible]);
 

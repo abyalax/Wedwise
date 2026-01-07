@@ -5,7 +5,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import { env } from '~/common/const/credential';
 import { NotFoundException, UnauthorizedException } from '~/lib/handler/error';
-import { userService } from '~/modules/users/user.service';
+import { userService } from '~/server/users/user.service';
 
 const options: AuthOptions = {
   session: {
@@ -41,11 +41,12 @@ const options: AuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
+        console.log(credentials);
         if (credentials?.email && credentials?.password) {
-          const userRepository = userService._getRepository();
-          const user = await userRepository.findWithRolesAndPermissions({
+          const user = await userService.findWithRolesAndPermissions({
             email: credentials.email,
           });
+          console.log(user);
           if (user === undefined) throw new NotFoundException('User not found');
           const isValid = await bcrypt.compare(credentials.password, user.password);
           if (!isValid) throw new UnauthorizedException('Invalid Password');
@@ -106,9 +107,9 @@ const options: AuthOptions = {
     },
   },
 
-  // pages: {
-  //   signIn: '/auth/login',
-  // },
+  pages: {
+    signIn: '/auth/login',
+  },
 
   secret: env.NEXT_SECRET,
 };

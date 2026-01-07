@@ -1,6 +1,7 @@
 'use client';
 
 import { metaRequestSchema } from '~/common/types/meta';
+import { QueryState } from '~/components/fragments/fallback/query-state';
 import { Table } from '~/components/fragments/table';
 import { useSearch } from '~/components/hooks/use-search';
 import { useColumns } from '../_hooks/use-columns';
@@ -9,7 +10,7 @@ import { useGetCustomers } from '../_hooks/use-get-customers';
 export const CustomersTable = () => {
   const search = useSearch(metaRequestSchema);
 
-  const { data } = useGetCustomers({
+  const { data, isLoading } = useGetCustomers({
     page: Number(search.page ?? 1),
     per_page: Number(search.per_page ?? 10),
     search: search.search as string,
@@ -18,24 +19,17 @@ export const CustomersTable = () => {
   const { columns, columnIds, initialColumnVisibility } = useColumns({
     defaultVisible: ['select', 'note', 'action'],
   });
+
   return (
-    <Table
-      data={data}
-      columns={columns}
-      columnIds={columnIds}
-      onClickRow={(data) => console.log(data.original)}
-      enableFeature={{
-        search: {
-          fieldSearchable: 'note',
-        },
-        columnVisibilitySelector: {
-          initialColumnVisibility,
-        },
-        engineSide: 'server_side',
-        pagination: {
-          perPageOptions: [5, 10, 20, 30, 40, 50, 100],
-        },
-      }}
-    />
+    <QueryState isLoading={isLoading}>
+      <Table
+        data={data}
+        columns={columns}
+        columnIds={columnIds}
+        initialColumnVisibility={initialColumnVisibility}
+        onClickRow={(data) => console.log(data)}
+        pagination={true}
+      />
+    </QueryState>
   );
 };

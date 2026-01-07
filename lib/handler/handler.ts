@@ -1,6 +1,11 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: <> */
 
-import { PrismaClientRustPanicError, PrismaClientValidationError } from '@prisma/client/runtime/client';
+import {
+  PrismaClientInitializationError,
+  PrismaClientKnownRequestError,
+  PrismaClientRustPanicError,
+  PrismaClientValidationError,
+} from '@prisma/client/runtime/client';
 import { JsonWebTokenError, NotBeforeError, TokenExpiredError } from 'jsonwebtoken';
 import { ZodError } from 'zod';
 import { Message } from '~/common/types/response';
@@ -21,6 +26,39 @@ export const handlers = new Map<ErrorConstructor, ExceptionHandler>([
       return {
         status: 422,
         message: Message.DATABASE_QUERY_FAILED,
+        error: e.message,
+      };
+    },
+  ],
+  [
+    PrismaClientKnownRequestError,
+    (e: PrismaClientKnownRequestError) => {
+      console.log('PrismaClientKnownRequestError: ', e.message);
+      return {
+        status: 422,
+        message: Message.ENTITY_NOT_FOUND,
+        error: e.message,
+      };
+    },
+  ],
+  [
+    PrismaClientRustPanicError,
+    (e: PrismaClientRustPanicError) => {
+      console.log('PrismaClientRustPanicError: ', e.message);
+      return {
+        status: 422,
+        message: Message.DATABASE_ERROR,
+        error: e.message,
+      };
+    },
+  ],
+  [
+    PrismaClientInitializationError,
+    (e: PrismaClientInitializationError) => {
+      console.log('PrismaClientInitializationError: ', e.message);
+      return {
+        status: 422,
+        message: Message.DATABASE_DOWN,
         error: e.message,
       };
     },
@@ -65,17 +103,6 @@ export const handlers = new Map<ErrorConstructor, ExceptionHandler>([
       return {
         status: 401,
         message: Message.TOKEN_MALFORMED,
-        error: e.message,
-      };
-    },
-  ],
-  [
-    PrismaClientRustPanicError,
-    (e: PrismaClientRustPanicError) => {
-      console.log('PrismaClientRustPanicError: ', e.message);
-      return {
-        status: 422,
-        message: Message.DATABASE_QUERY_FAILED,
         error: e.message,
       };
     },

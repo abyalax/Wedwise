@@ -1,5 +1,5 @@
-import { FallBack } from '~/components/fragments/fallback';
+import { Loading } from '~/components/fragments/fallback/loading';
 
 export default function LoadingPage() {
-  return <FallBack height={'100vh'} />;
+  return <Loading height={'100vh'} />;
 }

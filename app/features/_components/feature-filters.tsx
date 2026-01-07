@@ -12,7 +12,7 @@ export function FeatureFilters({ selectedCategory, onCategoryChange }: FeatureFi
 
   return (
     <div className="flex flex-wrap justify-center gap-2">
-      {categories.map((category) => (
+      {categories?.map((category) => (
         <button
           key={category.value}
           onClick={() => onCategoryChange(category.value)}

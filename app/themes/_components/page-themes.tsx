@@ -14,7 +14,7 @@ export const PageThemes = () => {
 
   const filteredThemes = useMemo(() => {
     if (activeCategory === 'all') return themes;
-    return themes.filter((theme) => theme.category === activeCategory);
+    return themes?.filter((theme) => theme.category === activeCategory);
   }, [activeCategory, themes]);
   return (
     <div className="min-h-screen bg-gradient-soft">
@@ -43,11 +43,11 @@ export const PageThemes = () => {
 
         {/* Results Count */}
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }} className="mb-6 text-sm text-muted-foreground">
-          Menampilkan {filteredThemes.length} tema
+          Menampilkan {filteredThemes?.length} tema
         </motion.p>
 
         {/* Theme Grid */}
-        <ThemeGrid themes={filteredThemes} />
+        <ThemeGrid themes={filteredThemes ?? []} />
       </main>
     </div>
   );

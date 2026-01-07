@@ -1,4 +1,4 @@
-import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 import { PricingPlan } from '../_types';
 
 const pricingPlans: PricingPlan[] = [
@@ -52,5 +52,5 @@ export const queryGetPricing = () =>
   });
 
 export const useGetPricing = () => {
-  return useSuspenseQuery(queryGetPricing());
+  return useQuery(queryGetPricing());
 };

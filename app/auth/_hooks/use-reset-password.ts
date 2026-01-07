@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 import { QUERY_KEY } from '~/common/const/querykey';
 import { TResponse } from '~/common/types/response';
-import { PayloadResetPassword, resetPassword } from '~/data/auth/auth.api';
+import { PayloadResetPassword, resetPassword } from '~/modules/auth/auth.api';
 
 export const useResetPassword = () => {
   return useMutation({

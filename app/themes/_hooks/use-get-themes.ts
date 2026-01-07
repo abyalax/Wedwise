@@ -1,4 +1,4 @@
-import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 import themeElegant from '~/assets/themes/theme-elegant.jpg';
 import themeMinimalist from '~/assets/themes/theme-minimalist.jpg';
 import themeModern from '~/assets/themes/theme-modern.jpg';
@@ -71,5 +71,5 @@ export const queryGetThemes = () =>
   });
 
 export const useGetThemes = () => {
-  return useSuspenseQuery(queryGetThemes());
+  return useQuery(queryGetThemes());
 };

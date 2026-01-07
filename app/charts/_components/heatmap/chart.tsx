@@ -8,7 +8,7 @@ import Lottie from 'lottie-react';
 import { useTheme } from 'next-themes';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { NotDataFoundV2 } from '~/assets';
-import { FallBack } from '~/components/fragments/fallback';
+import { Loading } from '~/components/fragments/fallback/loading';
 import { Flex } from '~/components/layouts/flex';
 import { data } from './config';
 
@@ -194,7 +194,7 @@ export function HeatmapChart() {
     return () => chartRef.current?.destroy();
   }, [matrix, max, min, xCount, xLabels, yCount, yLabels, isLightMode, formatPeriode]);
 
-  if (isLoading) return <FallBack />;
+  if (isLoading) return <Loading />;
 
   if (!data || data.length === 0) {
     return (

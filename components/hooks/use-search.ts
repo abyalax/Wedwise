@@ -1,64 +1,62 @@
 'use client';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { z } from 'zod';
 
-export function useSearch<TSchema extends z.ZodSchema>(schema: TSchema) {
+export function useSearch<TSchema extends z.ZodObject>(schema: TSchema) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
 
-  const raw: Record<string, string> = {};
-  searchParams.forEach((value, key) => {
-    raw[key] = value;
-  });
+  // 1. Normalize raw params
+  const raw = useMemo(() => {
+    const obj: Record<string, string> = {};
+    searchParams.forEach((value, key) => {
+      obj[key] = value;
+    });
+    return obj;
+  }, [searchParams]);
 
-  // Try to parse with schema
-  let parsed: z.core.output<TSchema>;
-  let hasValidationError = false;
+  // 2. Safe parse (NO throw)
+  const result = useMemo(() => {
+    return schema.safeParse(raw);
+  }, [schema, raw]);
 
-  try {
-    parsed = schema.parse(raw);
-  } catch (error) {
-    // notice failed validation
-    console.warn(error);
-    // If validation fails, parse empty object to get defaults
-    hasValidationError = true;
-    parsed = schema.parse({});
-  }
+  // 3. Final parsed value
+  const parsed = useMemo(() => {
+    if (result.success) return result.data;
+
+    // IMPORTANT:
+    // gunakan partial + safeParse untuk ambil default tanpa error
+    const fallback = schema
+      .partial()
+      .safeParse(raw);
+
+    return fallback.success ? fallback.data : {};
+  }, [schema, result, raw]);
+
+  // 4. Prevent infinite replace
+  const hasSyncedRef = useRef(false);
 
   useEffect(() => {
-    // If validation failed, replace URL with defaults
-    if (hasValidationError) {
-      const newParams = new URLSearchParams();
-      Object.entries(parsed as Record<string, string>).forEach(([key, value]) => {
-        if (value !== undefined) {
-          newParams.set(key, String(value));
-        }
-      });
-      router.replace(`${pathname}?${newParams.toString()}`);
-      return;
-    }
+    if (hasSyncedRef.current) return;
 
-    // Otherwise, check if we need to set any default values in URL
-    const needsDefaults = Object.keys(parsed as Record<string, string>).some((key: string) => {
-      return !searchParams.has(key) && (parsed as Record<string, string>)[key] !== undefined;
+    const newParams = new URLSearchParams(searchParams);
+    let changed = false;
+
+    Object.entries(parsed as Record<string, unknown>).forEach(([key, value]) => {
+      if (value !== undefined && !searchParams.has(key)) {
+        newParams.set(key, String(value));
+        changed = true;
+      }
     });
 
-    if (needsDefaults) {
-      const newParams = new URLSearchParams(searchParams);
-
-      // Add missing params with their default values
-      Object.entries(parsed as Record<string, string>).forEach(([key, value]) => {
-        if (!searchParams.has(key) && value !== undefined) {
-          newParams.set(key, String(value));
-        }
-      });
-
+    if (changed) {
+      hasSyncedRef.current = true;
       router.replace(`${pathname}?${newParams.toString()}`);
     }
-  }, [searchParams, router, pathname, parsed, hasValidationError]);
+  }, [parsed, pathname, router, searchParams]);
 
-  return parsed as z.core.output<TSchema>;
+  return parsed as z.output<TSchema>;
 }
